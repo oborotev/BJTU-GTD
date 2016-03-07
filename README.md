@@ -9,6 +9,7 @@ Repository for the Game Tool Development module
 ## 5. Details of Components
 ## 6. Milestones
 
+# Design
 ## 1. Problems
 ### We don't make mistakes, just happy little accidents.
 

@@ -2,9 +2,15 @@
 Repository for the Game Tool Development module
 
 # Table of Contents
-## Problems
-## Goals
-## User Story
-## Architecture
-## Details of Components
-## Milestones
+## 1. Problems
+## 2. Goals
+## 3. User Story
+## 4. Architecture
+## 5. Details of Components
+## 6. Milestones
+
+## 1. Problems
+### We don't make mistakes, just happy little accidents.
+
+## 2. Goals
+### Make a robust communication framework

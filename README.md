@@ -16,7 +16,7 @@ Repository for the Game Tool Development module
 
 
 ## 2. Goals
-- Develop a framework easy to use, to cover the 3 main systems.
+- Code a framework easy to use, to cover the 3 main systems.
 - Permit the developer to use it for P2P features or client-server communication
 
 ## 3. User Story

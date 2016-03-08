@@ -91,7 +91,7 @@ void                       TaiTaiP2PClient::listenOnClient()
         std::cout << "IN THE SHIT" << std::endl;
         status = this->receiveData();
         if (status == TaiTaiP2PClient::States::VALID)
-            std::cout << "Partner wrote : " << this->_clientRawData << std::endl;
+            std::cout << "Partner wrote : " << this->_clientPacketData.getData() << std::endl;
     }
 }
 
@@ -111,7 +111,7 @@ TaiTaiP2PClient::States    TaiTaiP2PClient::client()
     {
         std::cout << "Couldn't connect retrying in one second" << std::endl;
         this->_socket.disconnect();
-        sleep(1000000);
+        sleep(1);
     }
     std::cout << "Both connecned and listen" << std::endl;
     while (this->_rawData != "quit")

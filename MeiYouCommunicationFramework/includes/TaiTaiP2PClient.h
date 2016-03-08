@@ -16,12 +16,17 @@ public:
     TaiTaiP2PClient(const std::string &ip, const unsigned short &port, const float &timeout = 10, const bool &rawMode = true);
     virtual ~TaiTaiP2PClient();
     virtual States              client();
-    virtual sf::Socket::Status  socketBuild();
-    virtual void                socketDestroy();
+    virtual sf::Socket::Status  socketWriteBuild();
+    virtual void                socketWriteDestroy();
+    virtual sf::Socket::Status  socketListenBuild();
+    virtual void                socketListenDestroy();
     virtual void                setPacketDataSize(const unsigned short &size);
     virtual void                setRawMode(const bool &mode);
     virtual States              sendRawData(const void *data);
     virtual States              sendData(const void *data, const bool &isText = true);
+    virtual const States        receiveData();
+    virtual const States        receiveRawData();
+    virtual void                listenOnClient();
 };
 
 

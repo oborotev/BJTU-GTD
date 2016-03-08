@@ -10,8 +10,10 @@
 
 class P2PClient {
 public:
-    virtual sf::Socket::Status  socketBuild() = 0;
-    virtual void                socketDestroy() = 0;
+    virtual sf::Socket::Status  socketWriteBuild() = 0;
+    virtual void                socketWriteDestroy() = 0;
+    virtual sf::Socket::Status  socketListenBuild() = 0;
+    virtual void                socketListenDestroy() = 0;
     virtual void                setPacketDataSize(const unsigned short &size) = 0;
     virtual void                setRawMode(const bool &mode) = 0;
 protected:
@@ -21,6 +23,8 @@ protected:
     //Socket specifications
     std::string                 _rawData;
     sf::Packet                  _packetData;
+    sf::Packet                  _clientPacketData;
+    void                        *_clientRawData;
     //Socket otions
     std::size_t                 _dataSize;
     bool                        _rawMode;
@@ -28,6 +32,7 @@ protected:
     //Socket objects
     sf::TcpSocket               _socket;
     sf::TcpListener             _listener;
+    sf::TcpSocket               _client;
 };
 
 #endif //MEIYOUCOMMUNICATION_P2PCLIENT_H

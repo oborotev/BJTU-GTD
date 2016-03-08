@@ -5,12 +5,14 @@
 # include "TaiTaiP2PClient.h"
 
 TaiTaiP2PClient::TaiTaiP2PClient(const std::string &ip, const unsigned short &port, const float &timeout,
-                                const bool &rawMode)
+                                 const unsigned short &retries, const bool &rawMode)
 {
     _ip = ip;
     _port = port;
     _rawMode = rawMode;
     _timeout = sf::seconds(timeout);
+    _maxRetries = retries;
+    _retries = -1;
 }
 
 TaiTaiP2PClient::~TaiTaiP2PClient() {
@@ -88,14 +90,11 @@ void                       TaiTaiP2PClient::listenOnClient()
     std::cout << "ACCEPTED A CLIENT" << std::endl;
     while (status == TaiTaiP2PClient::States::VALID)
     {
-        std::cout << "IN THE SHIT" << std::endl;
         status = this->receiveData();
         if (status == TaiTaiP2PClient::States::VALID)
-            std::cout << "Partner wrote : " << this->_clientPacketData.getData() << std::endl;
+            std::cout << "Partner wrote : " << (char *)this->_clientPacketData.getData() << std::endl;
     }
 }
-
-#include <unistd.h>
 
 TaiTaiP2PClient::States    TaiTaiP2PClient::client()
 {
@@ -107,11 +106,19 @@ TaiTaiP2PClient::States    TaiTaiP2PClient::client()
         return status == sf::Socket::NotReady ? TaiTaiP2PClient::States::HOST_NOT_READY : TaiTaiP2PClient::States::ERROR;
     sf::Thread thread(&TaiTaiP2PClient::listenOnClient, this);
     thread.launch();
-    while ((status = this->socketWriteBuild()) != sf::Socket::Done)
+    while ((status = this->socketWriteBuild()) != sf::Socket::Done && ++this->_retries != this->_maxRetries)
     {
-        std::cout << "Couldn't connect retrying in one second" << std::endl;
+        std::cout << "Couldn't connect to the host... Retrying" << std::endl;
         this->_socket.disconnect();
         sleep(1);
+    }
+    if (status != sf::Socket::Done)
+    {
+        std::cout << "The host is unreachable. Closing." << std::endl;
+        this->socketWriteDestroy();
+        this->socketListenDestroy();
+        thread.terminate();
+        return (TaiTaiP2PClient::States::ERROR);
     }
     std::cout << "Both connecned and listen" << std::endl;
     while (this->_rawData != "quit")

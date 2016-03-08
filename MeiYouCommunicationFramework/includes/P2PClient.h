@@ -27,6 +27,8 @@ protected:
     void                        *_clientRawData;
     //Socket otions
     std::size_t                 _dataSize;
+    short                       _retries;
+    unsigned short              _maxRetries;
     bool                        _rawMode;
     sf::Time                    _timeout;
     //Socket objects

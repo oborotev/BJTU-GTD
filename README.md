@@ -12,7 +12,7 @@ Repository for the Game Tool Development module
 # Design
 ## 1. Problems
 - We don't have a framework that works easily on the 3 main desktop architectures : Linux, Windows and Mac
-- We don't have a framework that let's have both P2P and UTP communication.
+- We don't have a framework that let's have both P2P and client-server communication.
 
 
 ## 2. Goals
@@ -37,13 +37,13 @@ Repository for the Game Tool Development module
 
 ## 6. Milestones
 ### 0.1.0
-The framework encapsulate the sockets.
+The framework encapsulate TCP protocol.
 
 ### 0.2.0
 The framework let chat two users in basic P2P.
 
 ### 0.3.0
-The framework encapsulate the UDP protocol
+The framework encapsulate the client-server communication
 
 ### 1.0
-The client and server part are done. Both P2P and UDP are integrated.
+The client and server part are done. Both P2P and Server-client are integrated.

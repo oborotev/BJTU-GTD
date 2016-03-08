@@ -11,6 +11,8 @@ endif(WIN32)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+include_directories(BEFORE ${MY_SOURCE_DIR}includes/)
+
 set(SOURCE_FILES src/main.cpp)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 

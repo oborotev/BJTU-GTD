@@ -48,7 +48,7 @@ sf::Socket::Status         TaiTaiP2PClient::socketListenBuild()
     if ((status = this->_listener.listen(this->_port)) != sf::Socket::Done)
         return (status);
     std::cout << "IT MANAGED TO LISTEN" << std::endl;
-    return (this->_listener.accept(this->_client));
+    return (status);
 }
 
 TaiTaiP2PClient::States    TaiTaiP2PClient::sendRawData(const void *data)
@@ -84,25 +84,35 @@ void                       TaiTaiP2PClient::listenOnClient()
 {
     TaiTaiP2PClient::States    status = TaiTaiP2PClient::States::VALID ;
 
+    this->_listener.accept(this->_client);
+    std::cout << "ACCEPTED A CLIENT" << std::endl;
     while (status == TaiTaiP2PClient::States::VALID)
     {
         std::cout << "IN THE SHIT" << std::endl;
-        status = this->receiveRawData();
+        status = this->receiveData();
         if (status == TaiTaiP2PClient::States::VALID)
             std::cout << "Partner wrote : " << this->_clientRawData << std::endl;
     }
 }
 
+#include <unistd.h>
+
 TaiTaiP2PClient::States    TaiTaiP2PClient::client()
 {
     sf::Socket::Status     status;
+    sf::Clock              clock;
 
-    if ((status = this->socketWriteBuild()) != sf::Socket::Done ||
-            (status = this->socketListenBuild()) != sf::Socket::Done)
+
+    if ((status = this->socketListenBuild()) != sf::Socket::Done)
         return status == sf::Socket::NotReady ? TaiTaiP2PClient::States::HOST_NOT_READY : TaiTaiP2PClient::States::ERROR;
-    std::cout << "Both connecned and listen" << std::endl;
     sf::Thread thread(&TaiTaiP2PClient::listenOnClient, this);
     thread.launch();
+    while ((status = this->socketWriteBuild()) != sf::Socket::Done)
+    {
+        std::cout << "Couldn't connect retrying in one second" << std::endl;
+        sleep(1000000);
+    }
+    std::cout << "Both connecned and listen" << std::endl;
     while (this->_rawData != "quit")
     {
         std::cin >> this->_rawData;

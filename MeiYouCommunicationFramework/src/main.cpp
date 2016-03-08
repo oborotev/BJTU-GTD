@@ -1,11 +1,9 @@
-# include <iostream>
 # include "TaiTaiP2PClient.h"
 
-TaiTaiP2PClient::TaiTaiP2PClient() {
-    std::cout << "IN IT" << std::endl;
-}
-
 int main() {
-    TaiTaiP2PClient test;
+    TaiTaiP2PClient test("192.168.1.106", 53000);
+
+    if (test.client() == TaiTaiP2PClient::States::ERROR)
+        return 1;
     return 0;
 }

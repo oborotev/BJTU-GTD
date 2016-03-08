@@ -5,13 +5,19 @@
 #ifndef MEIYOUCOMMUNICATION_TAITAIP2PCLIENT_H
 #define MEIYOUCOMMUNICATION_TAITAIP2PCLIENT_H
 
-# include <SFML/Network.hpp>
+# include <iostream>
+# include <string.h>
 # include "P2PClient.h"
 
-class TaiTaiP2PClient : public P2PClient {
+class TaiTaiP2PClient : protected P2PClient {
 public:
-    TaiTaiP2PClient();
-    ~TaiTaiP2PClient() {};
+    enum class States {FINISHED, ERROR};
+public:
+    TaiTaiP2PClient(const std::string &ip, const int &port);
+    virtual ~TaiTaiP2PClient();
+    virtual States              client();
+    virtual sf::Socket::Status  socketBuild();
+    virtual void                socketDestroy();
 };
 
 

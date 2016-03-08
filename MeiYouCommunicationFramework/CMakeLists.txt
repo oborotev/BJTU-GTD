@@ -4,10 +4,16 @@ project(MeiYouCommunication)
 # Set executable name
 set(EXECUTABLE_NAME MeiYouCommunication)
 
+# SFML on  Windows
+if(WIN32)
+    set(SFML_ROOT "C:\\SFML")
+endif(WIN32)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES src/main.cpp)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
+
 
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})

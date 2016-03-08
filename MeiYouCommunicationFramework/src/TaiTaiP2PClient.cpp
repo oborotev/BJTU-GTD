@@ -120,5 +120,6 @@ TaiTaiP2PClient::States    TaiTaiP2PClient::client()
     }
     this->socketWriteDestroy();
     this->socketListenDestroy();
+    thread.terminate();
     return (TaiTaiP2PClient::States::FINISHED);
 }

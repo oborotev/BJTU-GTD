@@ -12,7 +12,7 @@ Repository for the Game Tool Development module
 # Design
 ## 1. Problems
 - We don't have a framework that works easily on the 3 main desktop architectures : Linux, Windows and Mac
-- We don't have a framework that let's have both P2P and client-server communication.
+- We don't have a framework that let having both P2P and client-server communication.
 
 
 ## 2. Goals

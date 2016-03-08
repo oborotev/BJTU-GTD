@@ -12,10 +12,20 @@ class P2PClient {
 public:
     virtual sf::Socket::Status  socketBuild() = 0;
     virtual void                socketDestroy() = 0;
+    virtual void                setPacketDataSize(const unsigned short &size) = 0;
+    virtual void                setRawMode(const bool &mode) = 0;
 protected:
-    int                         _port;
-    std::string                 _ip;
-    char                        *_data;
+    //Socket informations
+    unsigned short              _port;
+    sf::IpAddress               _ip;
+    //Socket specifications
+    char                        *_rawData;
+    sf::Packet                  _packetData;
+    //Socket otions
+    std::size_t                 _dataSize;
+    bool                        _rawMode;
+    sf::Time                    _timeout;
+    //Socket objects
     sf::TcpSocket               _socket;
     sf::TcpListener             _listener;
 };

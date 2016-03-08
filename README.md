@@ -32,7 +32,7 @@ Repository for the Game Tool Development module
 - As a user I want to chat on my Windows OS, Linux OS or Max OS
 
 ## 4. Architecture
-
+![alt text](https://github.com/oborotev/BJTU-GTD/blob/master/architecture/global.svg "Global Architecture")
 ## 5. Details of Components
 
 ## 6. Milestones

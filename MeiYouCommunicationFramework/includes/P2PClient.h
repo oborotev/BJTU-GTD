@@ -19,7 +19,7 @@ protected:
     unsigned short              _port;
     sf::IpAddress               _ip;
     //Socket specifications
-    char                        *_rawData;
+    std::string                 _rawData;
     sf::Packet                  _packetData;
     //Socket otions
     std::size_t                 _dataSize;

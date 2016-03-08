@@ -4,10 +4,12 @@
 
 # include "TaiTaiP2PClient.h"
 
-TaiTaiP2PClient::TaiTaiP2PClient(const std::string &ip, const unsigned short &port, const float &timeout)
+TaiTaiP2PClient::TaiTaiP2PClient(const std::string &ip, const unsigned short &port, const float &timeout,
+                                const bool &rawMode)
 {
     _ip = ip;
     _port = port;
+    _rawMode = rawMode;
     _timeout = sf::seconds(timeout);
 }
 
@@ -34,11 +36,31 @@ sf::Socket::Status         TaiTaiP2PClient::socketBuild()
     return (this->_socket.connect(this->_ip, this->_port, this->_timeout));
 }
 
+TaiTaiP2PClient::States    TaiTaiP2PClient::sendRawData(const void *data)
+{
+    return this->_socket.send(data, sizeof(data)) == sf::Socket::Status::Done ? TaiTaiP2PClient::States::VALID : TaiTaiP2PClient::States::ERROR;
+}
+
+TaiTaiP2PClient::States    TaiTaiP2PClient::sendData(const void *data, const bool &isText)
+{
+
+    this->_packetData.clear();
+    this->_packetData.append(data, sizeof(data));
+    return this->_socket.send(_packetData) == sf::Socket::Status::Done ? TaiTaiP2PClient::States::VALID : TaiTaiP2PClient::States::ERROR;
+}
+
 TaiTaiP2PClient::States    TaiTaiP2PClient::client()
 {
-    if (this->socketBuild() != sf::Socket::Done)
-        return (TaiTaiP2PClient::States::ERROR);
-    this->_socket.send("la cantine c'est dégueu putain", strlen("la cantine c'est dégueu putain"));
+    sf::Socket::Status     status;
+
+    if ((status = this->socketBuild()) != sf::Socket::Done)
+        return status == sf::Socket::NotReady ? TaiTaiP2PClient::States::HOST_NOT_READY : TaiTaiP2PClient::States::ERROR;
+
+    while (this->_rawData != "quit")
+    {
+        std::cin >> this->_rawData;
+        this->sendData(this->_rawData.c_str());
+    }
     this->socketDestroy();
     return (TaiTaiP2PClient::States::FINISHED);
 }

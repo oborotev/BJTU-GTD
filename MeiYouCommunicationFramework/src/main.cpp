@@ -1,7 +1,7 @@
 # include "TaiTaiP2PClient.h"
 
 int main() {
-    TaiTaiP2PClient test("192.168.1.106", 56002);
+    TaiTaiP2PClient test("192.168.1.106", 56000);
 
     if (test.client() == TaiTaiP2PClient::States::ERROR)
         return 1;

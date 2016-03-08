@@ -110,6 +110,7 @@ TaiTaiP2PClient::States    TaiTaiP2PClient::client()
     while ((status = this->socketWriteBuild()) != sf::Socket::Done)
     {
         std::cout << "Couldn't connect retrying in one second" << std::endl;
+        this->_socket.disconnect();
         sleep(1000000);
     }
     std::cout << "Both connecned and listen" << std::endl;

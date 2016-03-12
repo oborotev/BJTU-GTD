@@ -13,6 +13,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(BEFORE ${MY_SOURCE_DIR}includes/)
 
+# Output directory
+set(dir ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${dir}/bin")
+
 set(SOURCE_FILES src/main.cpp src/TaiTaiP2PClient.cpp)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 

@@ -19,6 +19,7 @@ public:
 protected:
     //Client options
     bool                        _consoleMode;
+    bool                        _textMode;
     //Socket informations
     unsigned short              _port;
     sf::IpAddress               _ip;
@@ -27,6 +28,7 @@ protected:
     sf::Packet                  _packetData;
     sf::Packet                  _clientPacketData;
     void                        *_clientRawData;
+    std::string                 _sentence;
     //Socket otions
     std::size_t                 _dataSize;
     short                       _retries;

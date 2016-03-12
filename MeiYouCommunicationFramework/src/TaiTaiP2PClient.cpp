@@ -6,7 +6,7 @@
 
 TaiTaiP2PClient::TaiTaiP2PClient(const std::string &ip, const unsigned short &port, const float &timeout,
                                  const unsigned short &retries, const bool &rawMode, const std::size_t sizeReceiveData,
-                                 const bool consoleMode)
+                                 const bool consoleMode, const bool textMode)
 {
     _ip = ip;
     _port = port;
@@ -14,6 +14,7 @@ TaiTaiP2PClient::TaiTaiP2PClient(const std::string &ip, const unsigned short &po
     _sizeReceiveData = sizeReceiveData;
     _timeout = sf::seconds(timeout);
     _consoleMode = consoleMode;
+    _textMode = textMode;
     _maxRetries = retries;
     _retries = -1;
 }
@@ -52,7 +53,7 @@ sf::Socket::Status         TaiTaiP2PClient::socketListenBuild()
 
     if ((status = this->_listener.listen(this->_port)) != sf::Socket::Done)
         return (status);
-    std::cout << "IT MANAGED TO LISTEN" << std::endl;
+    std::cout << "Waiting for someone to connect..." << std::endl;
     return (status);
 }
 
@@ -61,11 +62,11 @@ TaiTaiP2PClient::States    TaiTaiP2PClient::sendRawData(const void *data)
     return this->_socket.send(data, sizeof(data)) == sf::Socket::Status::Done ? TaiTaiP2PClient::States::VALID : TaiTaiP2PClient::States::ERROR;
 }
 
-TaiTaiP2PClient::States    TaiTaiP2PClient::sendData(const void *data, const bool &isText)
+TaiTaiP2PClient::States    TaiTaiP2PClient::sendData(const void *data, const std::size_t size, const bool &isText)
 {
 
     this->_packetData.clear();
-    this->_packetData.append(data, sizeof(data));
+    this->_packetData.append(data, size);
     return this->_socket.send(_packetData) == sf::Socket::Status::Done ? TaiTaiP2PClient::States::VALID : TaiTaiP2PClient::States::ERROR;
 }
 
@@ -88,17 +89,25 @@ const TaiTaiP2PClient::States    TaiTaiP2PClient::receiveRawData()
 
 void                       TaiTaiP2PClient::listenOnClient()
 {
-    TaiTaiP2PClient::States    status = TaiTaiP2PClient::States::VALID ;
+    TaiTaiP2PClient::States    status = TaiTaiP2PClient::States::VALID;
 
     this->_listener.accept(this->_client);
-    std::cout << "ACCEPTED A CLIENT" << std::endl;
+    std::cout << "New client connected : " << this->_client.getRemoteAddress() << std::endl;
     while (status == TaiTaiP2PClient::States::VALID)
     {
         status = this->receiveData();
         if (status == TaiTaiP2PClient::States::VALID)
-            std::cout << "Partner wrote : " << (char *)this->_clientPacketData.getData() << std::endl;
+            this->_sentence.append((char *)this->_clientPacketData.getData());
         else
-            std::cout << "There seem to be a problem with the host..." << std::endl;
+            std::cout << "There seem to be a problem with the host... (Host disconnected)" << std::endl;
+        if (_textMode)
+        {
+            //this->_sentence.pop_back();
+            std::cout << "Partner wrote : " << this->_sentence.c_str() << std::endl;
+            this->_sentence.clear();
+        }
+        else
+            std::cout << "DEBUG : " << this->_sentence << std::endl;
     }
 }
 
@@ -106,10 +115,11 @@ int                        TaiTaiP2PClient::consoleMode()
 {
     while (this->_rawData != "quit")
     {
-        std::cin >> this->_rawData;
+        std::getline(std::cin, this->_rawData);
         if (this->_rawData == "quit")
             break;
-        this->sendData(this->_rawData.c_str());
+        this->sendData(this->_rawData.c_str(), this->_rawData.size());
+        this->_rawData.clear();
     }
     return (0);
 }
@@ -138,7 +148,7 @@ TaiTaiP2PClient::States    TaiTaiP2PClient::client()
         thread.terminate();
         return (TaiTaiP2PClient::States::ERROR);
     }
-    std::cout << "Both connected and listening" << std::endl;
+    std::cout << "You connected to " << this->_ip << std::endl << "Type quit to quit the program..." << std::endl;
     if (_consoleMode)
         this->consoleMode();
     std::cout << "Quitting..." << std::endl;

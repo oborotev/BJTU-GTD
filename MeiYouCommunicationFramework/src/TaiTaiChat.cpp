@@ -27,7 +27,7 @@ int    TaiTaiChat::windowLoop()
                 window.close();
             if (event.type == sf::Event::KeyPressed )
             {
-                
+
                 std::cout << sf::Event::TextEntered << std::endl;
                 this->setIncomingMessage("s" , true);
             }

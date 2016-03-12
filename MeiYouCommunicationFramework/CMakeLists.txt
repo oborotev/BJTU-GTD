@@ -13,7 +13,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(BEFORE ${MY_SOURCE_DIR}includes/)
 
-set(SOURCE_FILES src/main.cpp src/TaiTaiP2PClient.cpp)
+set(SOURCE_FILES src/main.cpp src/TaiTaiP2PClient.cpp src/TaiTaiChat.cpp includes/TaiTaiChat.h)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 
 

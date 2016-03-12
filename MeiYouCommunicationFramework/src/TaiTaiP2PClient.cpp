@@ -5,12 +5,15 @@
 # include "TaiTaiP2PClient.h"
 
 TaiTaiP2PClient::TaiTaiP2PClient(const std::string &ip, const unsigned short &port, const float &timeout,
-                                 const unsigned short &retries, const bool &rawMode)
+                                 const unsigned short &retries, const bool &rawMode, const std::size_t sizeReceiveData,
+                                 const bool consoleMode)
 {
     _ip = ip;
     _port = port;
     _rawMode = rawMode;
+    _sizeReceiveData = sizeReceiveData;
     _timeout = sf::seconds(timeout);
+    _consoleMode = consoleMode;
     _maxRetries = retries;
     _retries = -1;
 }
@@ -77,6 +80,7 @@ const TaiTaiP2PClient::States    TaiTaiP2PClient::receiveData()
 const TaiTaiP2PClient::States    TaiTaiP2PClient::receiveRawData()
 {
     std::size_t                  received;
+
     if (this->_client.receive(this->_clientRawData, std::size_t(100), received) != sf::Socket::Done)
         return (TaiTaiP2PClient::States::ERROR);
     return (TaiTaiP2PClient::States::VALID);
@@ -93,7 +97,21 @@ void                       TaiTaiP2PClient::listenOnClient()
         status = this->receiveData();
         if (status == TaiTaiP2PClient::States::VALID)
             std::cout << "Partner wrote : " << (char *)this->_clientPacketData.getData() << std::endl;
+        else
+            std::cout << "There seem to be a problem with the host..." << std::endl;
     }
+}
+
+int                        TaiTaiP2PClient::consoleMode()
+{
+    while (this->_rawData != "quit")
+    {
+        std::cin >> this->_rawData;
+        if (this->_rawData == "quit")
+            break;
+        this->sendData(this->_rawData.c_str());
+    }
+    return (0);
 }
 
 TaiTaiP2PClient::States    TaiTaiP2PClient::client()
@@ -114,18 +132,16 @@ TaiTaiP2PClient::States    TaiTaiP2PClient::client()
     }
     if (status != sf::Socket::Done)
     {
-        std::cout << "The host is unreachable. Closing." << std::endl;
+        std::cout << "The host is unreachable. Closing..." << std::endl;
         this->socketWriteDestroy();
         this->socketListenDestroy();
         thread.terminate();
         return (TaiTaiP2PClient::States::ERROR);
     }
-    std::cout << "Both connecned and listen" << std::endl;
-    while (this->_rawData != "quit")
-    {
-        std::cin >> this->_rawData;
-        this->sendData(this->_rawData.c_str());
-    }
+    std::cout << "Both connected and listening" << std::endl;
+    if (_consoleMode)
+        this->consoleMode();
+    std::cout << "Quitting..." << std::endl;
     this->socketWriteDestroy();
     this->socketListenDestroy();
     thread.terminate();

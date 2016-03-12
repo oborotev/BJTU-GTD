@@ -17,6 +17,8 @@ public:
     virtual void                setPacketDataSize(const unsigned short &size) = 0;
     virtual void                setRawMode(const bool &mode) = 0;
 protected:
+    //Client options
+    bool                        _consoleMode;
     //Socket informations
     unsigned short              _port;
     sf::IpAddress               _ip;
@@ -30,6 +32,7 @@ protected:
     short                       _retries;
     unsigned short              _maxRetries;
     bool                        _rawMode;
+    std::size_t                 _sizeReceiveData;
     sf::Time                    _timeout;
     //Socket objects
     sf::TcpSocket               _socket;

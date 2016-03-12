@@ -118,7 +118,7 @@ int                        TaiTaiP2PClient::consoleMode()
         std::getline(std::cin, this->_rawData);
         if (this->_rawData == "quit")
             break;
-        this->sendData(this->_rawData.c_str(), this->_rawData.size());
+        this->sendData(this->_rawData.c_str(), this->_rawData.length() * sizeof(char *));
         this->_rawData.clear();
     }
     return (0);
@@ -148,7 +148,6 @@ TaiTaiP2PClient::States    TaiTaiP2PClient::client()
         thread.terminate();
         return (TaiTaiP2PClient::States::ERROR);
     }
-    std::cout << "You connected to " << this->_ip << std::endl << "Type quit to quit the program..." << std::endl;
     if (_consoleMode)
         this->consoleMode();
     std::cout << "Quitting..." << std::endl;

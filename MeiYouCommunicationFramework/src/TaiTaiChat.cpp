@@ -7,6 +7,7 @@
 TaiTaiChat::TaiTaiChat()
 {
     std::cout << "Contructeur Window" << std::endl;
+    this->setFontPath("/home/margoul_1/git/merde/BJTU-GTD/MeiYouCommunicationFramework/fonts/arial_narrow_7.ttf");
     this->windowLoop();
 }
 
@@ -27,15 +28,16 @@ int    TaiTaiChat::windowLoop()
                 window.close();
             if (event.type == sf::Event::KeyPressed )
             {
+                //userInput.insert(userInput.getSize(), event.text.unicode);
 
-                std::cout << sf::Event::TextEntered << std::endl;
-                this->setIncomingMessage("s" , true);
+                std::cout << event.KeyPressed << std::endl;
+                this->setIncomingMessage("a oui oui, a oui oui" , true);
             }
         }
         window.clear(sf::Color::Black);
 
         sf::Font font;
-        if (!font.loadFromFile("/home/margoul_1/git/merde/BJTU-GTD/MeiYouCommunicationFramework/fonts/arial_narrow_7.ttf"))
+        if (!font.loadFromFile(this->getFontPath()))
         {
             std::cout << "Unable to load font.. quitting" << std::endl;
             window.close();
@@ -52,7 +54,6 @@ int    TaiTaiChat::windowLoop()
 
     }
 }
-
 
 void    TaiTaiChat::setIncomingMessage(std::string message, bool me)
 {

@@ -30,6 +30,7 @@ Repository for the Game Tool Development module
 - As a user I want to be able to communicate to one person through an instant chat system
 - As a user I want to chat with multiple people in a chatroom
 - As a user I want to chat on my Windows OS, Linux OS or Max OS
+- As a user I want to be able to chat from a graphical front-end and a console.
 
 ## 4. Architecture
 ![alt text](https://raw.githubusercontent.com/oborotev/BJTU-GTD/master/architecture/global.png)
@@ -37,13 +38,19 @@ Repository for the Game Tool Development module
 
 ## 6. Milestones
 ### 0.1.0
-The framework encapsulate TCP protocol.
+The framework let chat two users in basic P2P in console mode.
 
 ### 0.2.0
-The framework let chat two users in basic P2P.
+The framework let chat two users in basic P2P in graphical mode.
 
 ### 0.3.0
 The framework encapsulate the client-server communication
+
+### 0.4.0
+The framework let multiple users chat in console mode.
+
+### 0.5.0
+The framework let multiple users chat in graphical mode.
 
 ### 1.0
 The client and server part are done. Both P2P and Server-client are integrated.

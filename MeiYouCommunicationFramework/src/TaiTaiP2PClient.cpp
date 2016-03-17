@@ -57,17 +57,17 @@ sf::Socket::Status         TaiTaiP2PClient::socketListenBuild()
     return (status);
 }
 
-TaiTaiP2PClient::States    TaiTaiP2PClient::sendRawData(const void *data)
-{
-    return this->_socket.send(data, sizeof(data)) == sf::Socket::Status::Done ? TaiTaiP2PClient::States::VALID : TaiTaiP2PClient::States::ERROR;
-}
-
 TaiTaiP2PClient::States    TaiTaiP2PClient::sendData(const void *data, const std::size_t size, const bool &isText)
 {
 
     this->_packetData.clear();
     this->_packetData.append(data, size);
     return this->_socket.send(_packetData) == sf::Socket::Status::Done ? TaiTaiP2PClient::States::VALID : TaiTaiP2PClient::States::ERROR;
+}
+
+TaiTaiP2PClient::States    TaiTaiP2PClient::sendRawData(const void *data)
+{
+    return this->_socket.send(data, sizeof(data)) == sf::Socket::Status::Done ? TaiTaiP2PClient::States::VALID : TaiTaiP2PClient::States::ERROR;
 }
 
 const TaiTaiP2PClient::States    TaiTaiP2PClient::receiveData()
@@ -118,7 +118,7 @@ int                        TaiTaiP2PClient::consoleMode()
         std::getline(std::cin, this->_rawData);
         if (this->_rawData == "quit")
             break;
-        this->sendData(this->_rawData.c_str(), this->_rawData.length() * sizeof(char *));
+        this->sendData(this->_rawData.c_str(), (this->_rawData.length() * sizeof(char)) + 1);
         this->_rawData.clear();
     }
     return (0);

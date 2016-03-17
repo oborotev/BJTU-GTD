@@ -1,5 +1,5 @@
-# BJTU-GTD
-Repository for the Game Tool Development module
+# Communication Framework
+This subdirectory contains the communication framework due for the 1st week.
 
 # Table of Contents
 ## 1. Problems
@@ -37,7 +37,7 @@ Repository for the Game Tool Development module
 ## 5. Details of Components
 
 ## 6. Milestones
-### 0.1.0
+### 0.1.0 (Current)
 The framework let chat two users in basic P2P in console mode.
 
 ### 0.2.0

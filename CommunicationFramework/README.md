@@ -33,7 +33,7 @@ This subdirectory contains the communication framework due for the 1st week.
 - As a user I want to be able to chat from a graphical front-end and a console.
 
 ## 4. Architecture
-![alt text](https://raw.githubusercontent.com/oborotev/BJTU-GTD/master/architecture/global.png)
+![alt text](https://raw.githubusercontent.com/oborotev/BJTU-GTD/master/CommunicationFramework/architecture/global.png)
 ## 5. Details of Components
 
 ## 6. Milestones

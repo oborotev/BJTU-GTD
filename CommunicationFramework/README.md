@@ -12,8 +12,6 @@ This subdirectory contains the communication framework due for the 1st week.
 # Design
 ## 1. Problems
 - We don't have a framework that works easily on the 3 main desktop architectures : Linux, Windows and Mac
-- We don't have a framework that let having both P2P and client-server communication.
-
 
 ## 2. Goals
 - Code a framework easy to use, to cover the 3 main systems.

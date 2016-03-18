@@ -25,7 +25,7 @@ This subdirectory contains the map editing tool due for the 2nd week.
 - As a user I want to be able to define new custom entities.
 
 ## 4. Architecture
-![alt text](https://raw.githubusercontent.com/oborotev/BJTU-GTD/master/CommunicationFramework/architecture/global.png)
+Coming soon
 ## 5. Details of Components
 
 ## 6. Milestones

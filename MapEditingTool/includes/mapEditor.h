@@ -5,8 +5,7 @@
 #ifndef MAPEDITINGTOOL_MAPEDITOR_H_H
 #define MAPEDITINGTOOL_MAPEDITOR_H_H
 
-# include "mediaHandler.h"
-# include "tilesetHandler.h"
+# include <iostream>
 # include "graphicHandler.h"
 
 class MapEditor

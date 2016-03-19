@@ -12,7 +12,7 @@ const int   MediaHandler::addNewTexture(const std::string &path, const std::stri
         std::cout << "Problem while loading the texture";
         return (1);
     }
-    this->_textures.push_back(std::make_pair(texture, name));
+    this->_textures.emplace_back(std::make_pair(texture, name));
     //std::cout << this->_textures[0].second << std::endl;
     return (0);
 }

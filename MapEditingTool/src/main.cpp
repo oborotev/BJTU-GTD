@@ -11,7 +11,7 @@ int main()
 
     MediaHandler lojl;
 
-    lojl.addNewTexture("/home/margoul_1/Images/44444.png", "test");
+    lojl.addNewTexture("../media/textures/tileset.gif", "test");
     lojl.addNewSprite("jeej");
     return 0;
 }

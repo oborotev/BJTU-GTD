@@ -20,8 +20,8 @@ public:
     sf::Sprite  getSprite(const std::string &name);
 
 private:
-    std::vector<std::pair<const sf::Texture &, const std::string &>> _textures;
-    std::vector<std::pair<sf::Sprite &, const std::string &>>  _sprites;
+    std::vector<std::pair<const sf::Texture &, const std::string>> _textures;
+    std::vector<std::pair<sf::Sprite &, const std::string>>  _sprites;
 };
 
 #endif //MAPEDITINGTOOL_MEDIAHANDLER_H

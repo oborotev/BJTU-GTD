@@ -20,6 +20,11 @@ GraphicHandler::~GraphicHandler() {
     delete this->_window;
 }
 
+void     GraphicHandler::drawer() const
+{
+    this->_window->draw(*this->_tilesetHandler);
+}
+
 void     GraphicHandler::loop()
 {
     while (this->_window->isOpen())
@@ -35,14 +40,17 @@ void     GraphicHandler::loop()
             }
         }
         this->_window->clear(sf::Color::Black);
+        this->drawer();
         this->_window->display();
     }
 }
 
-const int     GraphicHandler::init()
+const int     GraphicHandler::init(MediaHandler *mediaHandler, TilesetHandler *tilesetHandler)
 {
     this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
     this->_loop = new sf::Thread(&GraphicHandler::loop, this);
+    this->_mediaHandler = mediaHandler;
+    this->_tilesetHandler = tilesetHandler;
     return (0);
 }
 

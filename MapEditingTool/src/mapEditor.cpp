@@ -39,7 +39,7 @@ const int       MapEditor::start()
 {
     bool        running = true;
 
-    if (this->_graphicHandler->init())
+    if (this->_graphicHandler->init(this->_mediaHandler, this->_tilesetHandler))
     {
         std::cout << "There was a problem with the graphical initialization" << std::endl;
         return 1;

@@ -26,12 +26,24 @@ int    TaiTaiChat::windowLoop()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (event.type == sf::Event::KeyPressed )
+            if (event.type == sf::Event::TextEntered)
             {
-                //userInput.insert(userInput.getSize(), event.text.unicode);
-
-                std::cout << event.KeyPressed << std::endl;
-                this->setIncomingMessage("a oui oui, a oui oui" , true);
+                if ((event.text.unicode > 30 && (event.text.unicode < 128 || event.text.unicode > 159)))
+                {
+                    std::cout << static_cast<char>(event.text.unicode) << std::endl;
+                    this->_myLastMessage +=  static_cast<char>(event.text.unicode);
+                }
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+                {
+                    if (this->_myLastMessage.length() > 0) {
+                        std::cout << static_cast<char>(event.text.unicode) << std::endl;
+                        _myLastMessage.pop_back();
+                    }
+                }
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+                {
+                    //return to the next line
+                }
             }
         }
         window.clear(sf::Color::Black);
@@ -46,7 +58,7 @@ int    TaiTaiChat::windowLoop()
         sf::Text text;
         text.setFont(font); // font is a sf::Font
 
-        text.setString(getIncomingMessage(true));
+        text.setString(_myLastMessage);
         text.setCharacterSize(24); // in pixels, not points!
         text.setColor(sf::Color::Red);
         window.draw(text);

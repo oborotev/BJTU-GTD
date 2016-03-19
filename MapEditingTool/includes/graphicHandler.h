@@ -7,7 +7,7 @@
 
 # include <string>
 # include <SFML/Window.hpp>
-# include "mediaHandler.h"
+# include <SFML/Graphics.hpp>
 
 class GraphicHandler
 {

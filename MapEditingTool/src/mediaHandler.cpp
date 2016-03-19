@@ -4,10 +4,30 @@
 
 # include "mediaHandler.h"
 
-const int   MediaHandler::loadNewTexture(const std::string &path, const std::string &name)
+const int   MediaHandler::addNewTexture(const std::string &path, const std::string &name)
 {
-    std::string test = "loul";
-    std::string test2 = "lolll";
-    this->_textures.push_back(std::make_pair( test, test2));
+    sf::Texture texture;
+    if (!texture.loadFromFile(path))
+    {
+        std::cout << "Problem while loading the texture";
+        return (1);
+    }
+    this->_textures.push_back(std::make_pair(texture, name));
+    //std::cout << this->_textures[0].second << std::endl;
+    return (0);
+}
+
+const int   MediaHandler::addNewSprite(const std::string &textureName)
+{
+
+}
+
+sf::Texture MediaHandler::getTexture(const std::string &name)
+{
+
+}
+
+sf::Sprite  MediaHandler::getSprite(const std::string &name)
+{
 
 }

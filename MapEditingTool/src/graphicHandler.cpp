@@ -12,24 +12,52 @@ GraphicHandler::GraphicHandler(const std::string &title, unsigned int modeWidth,
     this->_modeHeight = modeHeight;
     this->_fixedSize = fixedSize;
     this->_title = title;
+    this->_isAlive = true;
+    this->_loop = nullptr;
 }
 
 GraphicHandler::~GraphicHandler() {
     delete this->_window;
 }
 
-const int     GraphicHandler::init()
+void     GraphicHandler::loop()
 {
-    this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
     while (this->_window->isOpen())
     {
         while (this->_window->pollEvent(this->_event))
         {
             if (this->_event.type == sf::Event::Closed)
+            {
+                this->_mutex.lock();
+                this->_isAlive = false;
+                this->_mutex.unlock();
                 this->_window->close();
+            }
         }
         this->_window->clear(sf::Color::Black);
         this->_window->display();
     }
+}
+
+const int     GraphicHandler::init()
+{
+    this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
+    this->_loop = new sf::Thread(&GraphicHandler::loop, this);
     return (0);
+}
+
+void    GraphicHandler::launch() const
+{
+    this->_loop->launch();
+}
+
+void    GraphicHandler::terminate() const
+{
+    this->_loop->wait();
+    this->_loop->terminate();
+}
+
+const bool      GraphicHandler::getIsAlive()
+{
+    return this->_isAlive;
 }

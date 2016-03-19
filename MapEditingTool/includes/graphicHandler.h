@@ -8,13 +8,20 @@
 # include <string>
 # include <SFML/Window.hpp>
 # include <SFML/Graphics.hpp>
+# include <SFML/System.hpp>
 
 class GraphicHandler
 {
 public:
     GraphicHandler(const std::string &title, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, unsigned int modeBitsPerPixel=0, const bool fixedSize = true);
     ~GraphicHandler();
-    const int init();
+    const int   init();
+    void        loop();
+    void        launch() const;
+    void        terminate() const;
+    const bool  getIsAlive();
+    //Mutex
+    sf::Mutex   _mutex;
 private:
     //Window object
     sf::RenderWindow  *_window;
@@ -27,6 +34,10 @@ private:
     bool         _fixedSize;
     //Event object
     sf::Event    _event;
+    //Thread loop
+    sf::Thread   *_loop;
+    //Cycle
+    bool         _isAlive;
 };
 
 #endif //MAPEDITINGTOOL_GRAPHICHANDLER_H

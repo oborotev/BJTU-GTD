@@ -15,7 +15,7 @@ public:
     ~MediaHandler() {};
     const int   loadNewTexture(const std::string &path, const std::string &name);
 private:
-    std::vector<std::pair<std::string &, const std::string &>> _textures;
+    std::vector<std::pair<const std::string &, const std::string &>> _textures;
     std::vector<std::pair<sf::Sprite &, const std::string &>>  _sprites;
 };
 

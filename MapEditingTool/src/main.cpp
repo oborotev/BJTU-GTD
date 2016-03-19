@@ -1,14 +1,10 @@
-# include "graphicHandler.h"
+# include "mapEditor.h"
 
 int main()
 {
-    /*
-    GraphicHandler graphicHandler("MapEditor");
+    MapEditor mapEditor;
 
-    graphicHandler.init();*/
-    MediaHandler  loul;
-    std::string test = "lol";
-    std::string test2 = "jeej";
-    loul.loadNewTexture( test , test2);
+    mapEditor.init();
+    mapEditor.start();
     return 0;
 }

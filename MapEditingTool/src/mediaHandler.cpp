@@ -13,7 +13,6 @@ const int   MediaHandler::addNewTexture(const std::string &path, const std::stri
         return (1);
     }
     this->_textures.emplace_back(std::make_pair(texture, name));
-    //std::cout << this->_textures[0].second << std::endl;
     return (0);
 }
 

@@ -56,6 +56,7 @@ void     GraphicHandler::loop()
         this->_window->clear(sf::Color::Black);
         this->drawer();
         this->_window->display();
+        sf::sleep(sf::microseconds(1000));
     }
 }
 

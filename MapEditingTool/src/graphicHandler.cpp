@@ -14,10 +14,24 @@ GraphicHandler::GraphicHandler(const std::string &title, unsigned int modeWidth,
     this->_title = title;
     this->_isAlive = true;
     this->_loop = nullptr;
+    this->_mediaHandler = new MediaHandler();
+    this->_tilesetHandler = new TilesetHandler();
 }
 
 GraphicHandler::~GraphicHandler() {
     delete this->_window;
+    delete this->_mediaHandler;
+    delete this->_tilesetHandler;
+}
+
+TilesetHandler*     GraphicHandler::getTilesetHandler()
+{
+    return (this->_tilesetHandler);
+}
+
+MediaHandler*       GraphicHandler::getMediaHandler()
+{
+    return (this->_mediaHandler);
 }
 
 void     GraphicHandler::drawer() const
@@ -45,12 +59,10 @@ void     GraphicHandler::loop()
     }
 }
 
-const int     GraphicHandler::init(MediaHandler *mediaHandler, TilesetHandler *tilesetHandler)
+const int     GraphicHandler::init()
 {
     this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
     this->_loop = new sf::Thread(&GraphicHandler::loop, this);
-    this->_mediaHandler = mediaHandler;
-    this->_tilesetHandler = tilesetHandler;
     return (0);
 }
 

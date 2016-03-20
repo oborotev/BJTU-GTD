@@ -7,8 +7,6 @@
 MapEditor::~MapEditor()
 {
     delete _graphicHandler;
-    delete _mediaHandler;
-    delete _tilesetHandler;
 }
 
 const int       MapEditor::init()
@@ -29,8 +27,8 @@ const int       MapEditor::init()
     if (!test.loadFromFile("../media/textures/tileset.gif"))
         return 1;
     this->_graphicHandler = new GraphicHandler("Map Editor");
-    this->_mediaHandler = new MediaHandler();
-    this->_tilesetHandler = new TilesetHandler();
+    this->_tilesetHandler = this->_graphicHandler->getTilesetHandler();
+    this->_mediaHandler = this->_graphicHandler->getMediaHandler();
     this->_tilesetHandler->init(test, sf::Vector2u(32, 32), level, 16, 8);
     return 0;
 }
@@ -39,7 +37,7 @@ const int       MapEditor::start()
 {
     bool        running = true;
 
-    if (this->_graphicHandler->init(this->_mediaHandler, this->_tilesetHandler))
+    if (this->_graphicHandler->init())
     {
         std::cout << "There was a problem with the graphical initialization" << std::endl;
         return 1;

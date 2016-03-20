@@ -17,12 +17,14 @@ class GraphicHandler
 public:
     GraphicHandler(const std::string &title, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, unsigned int modeBitsPerPixel=0, const bool fixedSize = true);
     ~GraphicHandler();
-    const int   init(MediaHandler   *mediaHandler, TilesetHandler *tilesetHandler);
+    const int   init();
     void        loop();
     void        launch() const;
     void        terminate() const;
     void        drawer() const;
     const bool  getIsAlive();
+    TilesetHandler* getTilesetHandler();
+    MediaHandler*   getMediaHandler();
     //Mutex
     sf::Mutex   _mutex;
 private:

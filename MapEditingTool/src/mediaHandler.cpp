@@ -6,13 +6,13 @@
 
 const int   MediaHandler::addNewTexture(const std::string &path, const std::string &name)
 {
-    sf::Texture texture;
-    if (!texture.loadFromFile(path))
+    this->_textures.emplace_back(std::make_pair(new sf::Texture, name));
+    if (!this->_textures.back().first->loadFromFile(path))
     {
-        std::cout << "Problem while loading the texture";
+        delete this->_textures.back().first;
+        std::cout << "Problem while loading the texture" << std::endl;
         return (1);
     }
-    this->_textures.emplace_back(std::make_pair(texture, name));
     return (0);
 }
 
@@ -41,9 +41,16 @@ const int   MediaHandler::addNewSprite(const std::string &textureName)
 */
 }
 
-sf::Texture MediaHandler::getTexture(const std::string &name)
+sf::Texture* MediaHandler::getTexture(const std::string &name)
 {
-
+    auto it = std::find_if(this->_textures.begin(), this->_textures.end(), [&name](const std::pair<sf::Texture *, const std::string>& obj) {return obj.second == name;});
+    if (it != this->_textures.end())
+        return (it->first);
+    else
+    {
+        std::cout << "Couldn't find a texture for " << name << " in the registered textures" << std::endl;
+        return (NULL);
+    }
 }
 
 sf::Sprite  MediaHandler::getSprite(const std::string &name)

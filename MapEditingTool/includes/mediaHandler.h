@@ -16,12 +16,12 @@ public:
     ~MediaHandler() {};
     const int   addNewTexture(const std::string &path, const std::string &name);
     const int   addNewSprite(const std::string &textureName);
-    sf::Texture getTexture(const std::string &name);
+    sf::Texture *getTexture(const std::string &name);
     sf::Sprite  getSprite(const std::string &name);
 
 private:
-    std::vector<std::pair<const sf::Texture &, const std::string>> _textures;
-    std::vector<std::pair<sf::Sprite &, const std::string>>  _sprites;
+    std::vector<std::pair<sf::Texture *, const std::string>> _textures;
+    std::vector<std::pair<sf::Sprite *, const std::string>>  _sprites;
 };
 
 #endif //MAPEDITINGTOOL_MEDIAHANDLER_H

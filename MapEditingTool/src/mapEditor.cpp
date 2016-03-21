@@ -24,12 +24,11 @@ const int       MapEditor::init()
                     0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
             };
 
-    if (!test.loadFromFile("../media/textures/tileset.gif"))
-        return 1;
     this->_graphicHandler = new GraphicHandler("Map Editor");
     this->_tilesetHandler = this->_graphicHandler->getTilesetHandler();
     this->_mediaHandler = this->_graphicHandler->getMediaHandler();
-    this->_tilesetHandler->init(test, sf::Vector2u(32, 32), level, 16, 8);
+    this->_mediaHandler->addNewTexture("../media/textures/tileset.gif", "map_tileset");
+    this->_tilesetHandler->init(this->_mediaHandler->getTexture("map_tileset"), sf::Vector2u(32, 32), level, 16, 8);
     return 0;
 }
 

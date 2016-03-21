@@ -4,7 +4,7 @@
 
 # include "tilesetHandler.h"
 
-const int       TilesetHandler::init(const sf::Texture &tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
+const int       TilesetHandler::init(sf::Texture *tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
 {
     this->_tileset = tileset;
 
@@ -18,8 +18,8 @@ const int       TilesetHandler::init(const sf::Texture &tileset, sf::Vector2u ti
             int tileNumber = tiles[i + j * width];
 
 
-            int tu = tileNumber % (_tileset.getSize().x / tileSize.x);
-            int tv = tileNumber / (_tileset.getSize().x / tileSize.x);
+            int tu = tileNumber % (_tileset->getSize().x / tileSize.x);
+            int tv = tileNumber / (_tileset->getSize().x / tileSize.x);
 
 
             sf::Vertex* quad = &_vertices[(i + j * width) * 4];
@@ -42,6 +42,6 @@ const int       TilesetHandler::init(const sf::Texture &tileset, sf::Vector2u ti
 void            TilesetHandler::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
-    states.texture = &_tileset;
+    states.texture = _tileset;
     target.draw(_vertices, states);
 }

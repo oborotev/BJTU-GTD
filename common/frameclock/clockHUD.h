@@ -33,7 +33,7 @@ private:
         sf::Text elem;
         elem.setFont(*m_font);
         elem.setCharacterSize(16);
-        elem.setPosition(5.0f, 5.0f);
+        elem.setPosition(800.0f, 580.0f);
 
         // Draw the available frame time statistics.
         for (std::size_t i = 0; i < stats.size(); ++i)

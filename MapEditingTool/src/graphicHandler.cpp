@@ -56,7 +56,6 @@ void     GraphicHandler::loop()
         this->_window->draw(*this->_clockHUD);
     this->_window->display();
     this->_clock->endFrame();
-    sf::sleep(sf::microseconds(1000));
 }
 
 void          GraphicHandler::setFpsDebug(const bool &option)
@@ -66,7 +65,7 @@ void          GraphicHandler::setFpsDebug(const bool &option)
 
 const int     GraphicHandler::init()
 {
-    this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
+    this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title, sf::Style::Close);
     if (this->_mainFontPath != "")
         if (!this->_mainFont.loadFromFile(this->_mainFontPath))
         {
@@ -75,6 +74,7 @@ const int     GraphicHandler::init()
         }
     this->_clock = new sfx::FrameClock();
     this->_clockHUD = new ClockHUD(*this->_clock, this->_mainFont);
+    this->_window->setFramerateLimit(60);
     return (0);
 }
 
@@ -96,14 +96,13 @@ const bool      GraphicHandler::pollEvent()
 {
     bool        temp;
 
-
+    this->_clock->beginFrame();
     temp = this->_window->pollEvent(this->_event);
     return (temp);
 }
 
 const bool      GraphicHandler::eventTriggered(const sf::Event::EventType& eventType) const
 {
-    this->_clock->beginFrame();
     if (this->_event.type == eventType)
         return (true);
     return (false);

@@ -50,7 +50,6 @@ const int       MapEditor::start()
                 this->_graphicHandler->terminate();
         }
         this->_graphicHandler->loop();
-        sf::sleep(sf::microseconds(10000));
     }
     return 0;
 }

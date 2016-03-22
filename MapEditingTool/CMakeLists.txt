@@ -12,6 +12,8 @@ endif(WIN32)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(BEFORE ${MY_SOURCE_DIR}includes/)
+# For frameClock includes
+include_directories(BEFORE ${MY_SOURCE_DIR}../common/frameclock/)
 
 # Output directory
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})

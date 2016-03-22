@@ -11,20 +11,27 @@
 # include <SFML/System.hpp>
 # include "tilesetHandler.h"
 # include "mediaHandler.h"
+# include "frameClock.h"
+# include "clockHUD.h"
 
 class GraphicHandler
 {
 public:
-    GraphicHandler(const std::string &title, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, unsigned int modeBitsPerPixel=0, const bool fixedSize = true);
+    GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false);
     ~GraphicHandler();
     const int   init();
     void        loop();
-    void        launch() const;
-    void        terminate() const;
+    void        launch();
+    void        terminate();
     void        drawer() const;
     const bool  getIsAlive();
     TilesetHandler* getTilesetHandler();
     MediaHandler*   getMediaHandler();
+    //Events
+    const bool  pollEvent();
+    const bool  eventTriggered(const sf::Event::EventType& eventType) const;
+    //Debug
+    void        setFpsDebug(const bool &option);
     //Mutex
     sf::Mutex   _mutex;
 private:
@@ -46,6 +53,14 @@ private:
     TilesetHandler *_tilesetHandler;
     //Cycle
     bool         _isAlive;
+    //Clock
+    sfx::FrameClock *_clock;
+    ClockHUD        *_clockHUD;
+    //Fonts
+    std::string      _mainFontPath;
+    sf::Font         _mainFont;
+    //Debug
+    bool             _fpsDebug;
 };
 
 #endif //MAPEDITINGTOOL_GRAPHICHANDLER_H

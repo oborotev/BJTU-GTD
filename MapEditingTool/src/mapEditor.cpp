@@ -11,7 +11,6 @@ MapEditor::~MapEditor()
 
 const int       MapEditor::init()
 {
-    sf::Texture test;
     const int level[] =
             {
                     0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -24,11 +23,12 @@ const int       MapEditor::init()
                     0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
             };
 
-    this->_graphicHandler = new GraphicHandler("Map Editor");
+    this->_graphicHandler = new GraphicHandler("Map Editor", "../../common/media/fonts/DTM-Mono.otf");
     this->_tilesetHandler = this->_graphicHandler->getTilesetHandler();
     this->_mediaHandler = this->_graphicHandler->getMediaHandler();
     this->_mediaHandler->addNewTexture("../media/textures/tileset.gif", "map_tileset");
     this->_tilesetHandler->init(this->_mediaHandler->getTexture("map_tileset"), sf::Vector2u(32, 32), level, 16, 8);
+    this->_graphicHandler->setFpsDebug(true);
     return 0;
 }
 
@@ -42,14 +42,15 @@ const int       MapEditor::start()
         return 1;
     }
     this->_graphicHandler->launch();
-    while (running)
+    while (this->_graphicHandler->getIsAlive())
     {
-        this->_graphicHandler->_mutex.lock();
-        if (!this->_graphicHandler->getIsAlive())
-            running = false;
-        this->_graphicHandler->_mutex.unlock();
+        while (this->_graphicHandler->pollEvent())
+        {
+            if (this->_graphicHandler->eventTriggered(sf::Event::Closed))
+                this->_graphicHandler->terminate();
+        }
+        this->_graphicHandler->loop();
         sf::sleep(sf::microseconds(10000));
     }
-    this->_graphicHandler->terminate();
     return 0;
 }

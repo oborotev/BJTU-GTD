@@ -24,7 +24,7 @@ const int       MapEditor::init()
             };
 
     this->_graphicHandler = new GraphicHandler("Map Editor", "../../common/media/fonts/DTM-Mono.otf");
-    this->_tilesetHandler = this->_graphicHandler->getTilesetHandler();
+    this->_tilesetHandler = this->_graphicHandler->getBaseMap();
     this->_mediaHandler = this->_graphicHandler->getMediaHandler();
     this->_mediaHandler->addNewTexture("../media/textures/tileset.gif", "map_tileset");
     this->_tilesetHandler->init(this->_mediaHandler->getTexture("map_tileset"), sf::Vector2u(32, 32), level, 16, 8);
@@ -34,8 +34,6 @@ const int       MapEditor::init()
 
 const int       MapEditor::start()
 {
-    bool        running = true;
-
     if (this->_graphicHandler->init())
     {
         std::cout << "There was a problem with the graphical initialization" << std::endl;
@@ -49,6 +47,7 @@ const int       MapEditor::start()
             if (this->_graphicHandler->eventTriggered(sf::Event::Closed))
                 this->_graphicHandler->terminate();
         }
+        this->_graphicHandler->drawBaseMap();
         this->_graphicHandler->loop();
     }
     return 0;

@@ -23,15 +23,17 @@ public:
     void        loop();
     void        launch();
     void        terminate();
-    void        drawer() const;
+    void        drawBaseMap() const;
     const bool  getIsAlive();
-    TilesetHandler* getTilesetHandler();
+    TilesetHandler* getBaseMap();
     MediaHandler*   getMediaHandler();
     //Events
     const bool  pollEvent();
     const bool  eventTriggered(const sf::Event::EventType& eventType) const;
     //Debug
     void        setFpsDebug(const bool &option);
+    //Drawing
+    void        draw(const sf::Drawable &drawable) const;
     //Mutex
     sf::Mutex   _mutex;
 private:
@@ -50,7 +52,7 @@ private:
     sf::Thread   *_loop;
     //Handlers
     MediaHandler   *_mediaHandler;
-    TilesetHandler *_tilesetHandler;
+    TilesetHandler *_baseMap;
     //Cycle
     bool         _isAlive;
     //Clock

@@ -15,7 +15,7 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
     this->_isAlive = true;
     this->_loop = nullptr;
     this->_mediaHandler = new MediaHandler();
-    this->_tilesetHandler = new TilesetHandler();
+    this->_baseMap = new TilesetHandler();
     this->_mainFontPath = mainFontPath;
     this->_fpsDebug = fpsDebug;
 }
@@ -23,14 +23,14 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
 GraphicHandler::~GraphicHandler() {
     delete this->_window;
     delete this->_mediaHandler;
-    delete this->_tilesetHandler;
+    delete this->_baseMap;
     delete this->_clock;
     delete this->_clockHUD;
 }
 
-TilesetHandler*     GraphicHandler::getTilesetHandler()
+TilesetHandler*     GraphicHandler::getBaseMap()
 {
-    return (this->_tilesetHandler);
+    return (this->_baseMap);
 }
 
 MediaHandler*       GraphicHandler::getMediaHandler()
@@ -38,9 +38,14 @@ MediaHandler*       GraphicHandler::getMediaHandler()
     return (this->_mediaHandler);
 }
 
-void     GraphicHandler::drawer() const
+void     GraphicHandler::drawBaseMap() const
 {
-    this->_window->draw(*this->_tilesetHandler);
+    this->_window->draw(*this->_baseMap);
+}
+
+void     GraphicHandler::draw(const sf::Drawable &drawable) const
+{
+    this->_window->draw(drawable);
 }
 
 void     GraphicHandler::loop()
@@ -50,11 +55,10 @@ void     GraphicHandler::loop()
         this->_window->close();
         return;
     }
-    this->_window->clear(sf::Color::Black);
-    this->drawer();
     if (this->_fpsDebug)
         this->_window->draw(*this->_clockHUD);
     this->_window->display();
+    this->_window->clear(sf::Color::Black);
     this->_clock->endFrame();
 }
 

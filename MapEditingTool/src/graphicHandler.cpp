@@ -40,12 +40,13 @@ MediaHandler*       GraphicHandler::getMediaHandler()
 
 void     GraphicHandler::drawBaseMap() const
 {
-    this->_window->draw(*this->_baseMap);
+    this->draw(*this->_baseMap);
 }
 
 void     GraphicHandler::draw(const sf::Drawable &drawable) const
 {
-    this->_window->draw(drawable);
+    if (this->_isAlive)
+        this->_window->draw(drawable);
 }
 
 void     GraphicHandler::loop()
@@ -93,6 +94,7 @@ void    GraphicHandler::launch()
 
 void    GraphicHandler::terminate()
 {
+    this->_mediaHandler->wipeAll();
     this->_isAlive = false;
 }
 

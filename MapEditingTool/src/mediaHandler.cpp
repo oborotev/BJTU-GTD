@@ -4,6 +4,16 @@
 
 # include "mediaHandler.h"
 
+void        MediaHandler::wipeAll()
+{
+    for (std::vector<std::pair<sf::Texture *, const std::string>>::iterator it = this->_textures.begin(); it != this->_textures.end(); ++it)
+        delete it->first;
+    this->_textures.clear();
+    for (std::vector<std::pair<sf::Sprite *, const std::string>>::iterator it = this->_sprites.begin(); it != this->_sprites.end(); ++it)
+        delete it->first;
+    this->_sprites.clear();
+}
+
 const int   MediaHandler::addNewTexture(const std::string &path, const std::string &name)
 {
     this->_textures.emplace_back(std::make_pair(new sf::Texture, name));

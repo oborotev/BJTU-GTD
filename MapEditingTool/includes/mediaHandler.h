@@ -18,6 +18,8 @@ public:
     const int   addNewSprite(const std::string &textureName);
     sf::Texture *getTexture(const std::string &name);
     sf::Sprite  getSprite(const std::string &name);
+    //Clean the vectors
+    void        wipeAll();
 
 private:
     std::vector<std::pair<sf::Texture *, const std::string>> _textures;

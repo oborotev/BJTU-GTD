@@ -11,6 +11,8 @@ void        MediaHandler::wipeAll()
     this->_textures.clear();
     for (std::vector<std::pair<sf::Sprite *, const std::string>>::iterator it = this->_sprites.begin(); it != this->_sprites.end(); ++it)
         delete it->first;
+    for (std::vector<std::pair<sf::Shape *, const std::string>>::iterator it = this->_shapes.begin(); it != this->_shapes.end(); ++it)
+        delete it->first;
     this->_sprites.clear();
 }
 
@@ -23,6 +25,12 @@ const int   MediaHandler::addNewTexture(const std::string &path, const std::stri
         std::cout << "Problem while loading the texture" << std::endl;
         return (1);
     }
+    return (0);
+}
+
+const int   MediaHandler::addNewShape(sf::Shape *shape, const std::string &name)
+{
+    this->_shapes.emplace_back(std::make_pair(shape, name));
     return (0);
 }
 
@@ -49,6 +57,18 @@ const int   MediaHandler::addNewSprite(const std::string &textureName)
     //std::cout << this->_textures[0].second << std::endl;
     return (0);
 */
+}
+
+sf::Shape* MediaHandler::getShape(const std::string &name)
+{
+    auto it = std::find_if(this->_shapes.begin(), this->_shapes.end(), [&name](const std::pair<sf::Shape *, const std::string>& obj) {return obj.second == name;});
+    if (it != this->_shapes.end())
+        return (it->first);
+    else
+    {
+        std::cout << "Couldn't find a texture for " << name << " in the registered textures" << std::endl;
+        return (NULL);
+    }
 }
 
 sf::Texture* MediaHandler::getTexture(const std::string &name)

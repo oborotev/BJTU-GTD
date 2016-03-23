@@ -19,7 +19,7 @@ include_directories(BEFORE ${MY_SOURCE_DIR}../common/frameclock/)
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${dir}/bin")
 
-set(SOURCE_FILES src/main.cpp src/graphicHandler.cpp src/mediaHandler.cpp src/mapEditor.cpp src/tilesetHandler.cpp)
+set(SOURCE_FILES src/main.cpp src/graphicHandler.cpp src/mediaHandler.cpp src/mapEditor.cpp src/tilesetHandler.cpp src/cameraHandler.cpp)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 
 

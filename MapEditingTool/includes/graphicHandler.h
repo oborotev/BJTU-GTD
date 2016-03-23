@@ -13,6 +13,7 @@
 # include "mediaHandler.h"
 # include "frameClock.h"
 # include "clockHUD.h"
+# include "cameraHandler.h"
 
 class GraphicHandler
 {
@@ -48,6 +49,8 @@ private:
     bool         _fixedSize;
     //Event object
     sf::Event    _event;
+    //Cameras
+    CameraHandler  *_mainCamera;
     //Thread loop
     sf::Thread   *_loop;
     //Handlers

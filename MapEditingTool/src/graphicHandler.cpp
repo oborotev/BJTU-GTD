@@ -16,6 +16,7 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
     this->_loop = nullptr;
     this->_mediaHandler = new MediaHandler();
     this->_baseMap = new TilesetHandler();
+    this->_mainCamera = new CameraHandler();
     this->_mainFontPath = mainFontPath;
     this->_fpsDebug = fpsDebug;
 }
@@ -26,6 +27,7 @@ GraphicHandler::~GraphicHandler() {
     delete this->_baseMap;
     delete this->_clock;
     delete this->_clockHUD;
+    delete this->_mainCamera;
 }
 
 TilesetHandler*     GraphicHandler::getBaseMap()
@@ -80,6 +82,8 @@ const int     GraphicHandler::init()
     this->_clock = new sfx::FrameClock();
     this->_clockHUD = new ClockHUD(*this->_clock, this->_mainFont);
     this->_window->setFramerateLimit(60);
+    this->_mainCamera->init(sf::FloatRect(0, 0, this->_window->getSize().x, this->_window->getSize().y));
+    this->_window->setView(*this->_mainCamera->getCamera());
     return (0);
 }
 

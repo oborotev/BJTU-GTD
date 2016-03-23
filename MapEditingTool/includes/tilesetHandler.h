@@ -6,13 +6,15 @@
 #define MAPEDITINGTOOL_TILESETHANDLER_H
 
 # include <SFML/Graphics.hpp>
+# include <fstream>
+# include <string>
 
 class TilesetHandler : public sf::Drawable, public sf::Transformable
 {
 public:
     TilesetHandler() {};
     ~TilesetHandler() {};
-    const int       init(sf::Texture *tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height);
+    const int       init(sf::Texture *tileset, sf::Vector2u tileSize, const std::string& level_path, unsigned int width=0, unsigned int height=0);
 private:
     virtual void    draw(sf::RenderTarget& target, sf::RenderStates states) const;
     sf::Texture     *_tileset;

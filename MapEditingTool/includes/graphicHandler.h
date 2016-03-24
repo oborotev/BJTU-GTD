@@ -39,6 +39,7 @@ public:
     //Events
     const bool  pollEvent();
     const bool  eventTriggered(const sf::Event::EventType& eventType) const;
+    bool        isKeyDown(const sf::Keyboard::Key &key);
     //Camera
     CameraHandler*  getCamera();
     void            moveCamera(const Directions &direction);
@@ -60,6 +61,8 @@ private:
     bool         _fixedSize;
     //Event object
     sf::Event    _event;
+    //Event settings
+    std::array<bool, sf::Keyboard::Key::KeyCount> _keyStates;
     //Cameras
     CameraHandler  *_mainCamera;
     //Camera settings

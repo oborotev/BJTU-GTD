@@ -20,6 +20,7 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
     this->_mainFontPath = mainFontPath;
     this->_fpsDebug = fpsDebug;
     this->_cameraSpeed = cameraSpeed;
+    this->_keyStates.fill(false);
 }
 
 GraphicHandler::~GraphicHandler() {
@@ -70,6 +71,19 @@ void     GraphicHandler::loop()
     this->_window->display();
     this->_window->clear(sf::Color::Black);
     this->_clock->endFrame();
+}
+
+bool          GraphicHandler::isKeyDown(const sf::Keyboard::Key &key)
+{
+    if (this->_event.type == sf::Event::KeyReleased && this->_event.key.code == key)
+        this->_keyStates[key] = false;
+    if (sf::Keyboard::isKeyPressed(key) && !this->_keyStates[key])
+    {
+        this->_keyStates[key] = true;
+        return (true);
+    }
+    else if (this->_keyStates[key])
+        return (true);
 }
 
 void          GraphicHandler::moveCamera(const Directions &direction)

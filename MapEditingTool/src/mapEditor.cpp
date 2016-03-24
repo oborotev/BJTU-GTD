@@ -34,18 +34,16 @@ const int       MapEditor::start()
     while (this->_graphicHandler->getIsAlive())
     {
         while (this->_graphicHandler->pollEvent())
-        {
             if (this->_graphicHandler->eventTriggered(sf::Event::Closed))
                 this->_graphicHandler->terminate();
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-                this->_graphicHandler->moveCamera(GraphicHandler::Directions::LEFT);
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-                this->_graphicHandler->moveCamera(GraphicHandler::Directions::RIGHT);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-                this->_graphicHandler->moveCamera(GraphicHandler::Directions::UP);
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-                this->_graphicHandler->moveCamera(GraphicHandler::Directions::DOWN);
-        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            this->_graphicHandler->moveCamera(GraphicHandler::Directions::LEFT);
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            this->_graphicHandler->moveCamera(GraphicHandler::Directions::RIGHT);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            this->_graphicHandler->moveCamera(GraphicHandler::Directions::UP);
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            this->_graphicHandler->moveCamera(GraphicHandler::Directions::DOWN);
         this->_graphicHandler->drawBaseMap();
         this->_graphicHandler->draw(*this->_mediaHandler->getShape("tile_choose_bg"));
         this->_graphicHandler->loop();

@@ -11,7 +11,7 @@ MapEditor::~MapEditor()
 
 const int       MapEditor::init()
 {
-    this->_graphicHandler = new GraphicHandler("Map Editor", "../../common/media/fonts/DTM-Mono.otf");
+    this->_graphicHandler = new GraphicHandler("Map Editor", "../../common/media/fonts/DTM-Mono.otf", 1024, 768, true, sf::IntRect(0,0, 1200, 800));
     this->_tilesetHandler = this->_graphicHandler->getBaseMap();
     this->_mediaHandler = this->_graphicHandler->getMediaHandler();
     this->_mediaHandler->addNewTexture("../media/textures/tileset.gif", "map_tileset");

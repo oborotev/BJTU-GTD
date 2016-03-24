@@ -4,7 +4,7 @@
 
 #include "graphicHandler.h"
 
-GraphicHandler::GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth, unsigned int modeHeight, unsigned int modeBitsPerPixel,
+GraphicHandler::GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth, unsigned int modeHeight, const bool cameraDelimited, const sf::IntRect &cameraDelimitation, unsigned int modeBitsPerPixel,
                 const bool fixedSize, const bool fpsDebug, const float cameraSpeed)
 {
     this->_modeBitsPerPixel = !modeBitsPerPixel ? sf::VideoMode::getDesktopMode().bitsPerPixel : modeBitsPerPixel;
@@ -20,6 +20,8 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
     this->_mainFontPath = mainFontPath;
     this->_fpsDebug = fpsDebug;
     this->_cameraSpeed = cameraSpeed;
+    this->_cameraDelimitation = cameraDelimitation;
+    this->_cameraDelimited = cameraDelimited;
     this->_keyStates.fill(false);
 }
 
@@ -91,13 +93,13 @@ void          GraphicHandler::moveCamera(const Directions &direction)
     int     coef = (this->_cameraSpeed * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
 
     if (direction == Directions::UP)
-        this->_mainCamera->getView()->move(0.0, -coef);
+        this->_mainCamera->move(0.0, -coef);
     else if (direction == Directions::DOWN)
-        this->_mainCamera->getView()->move(0.0, coef);
+        this->_mainCamera->move(0.0, coef);
     else if (direction == Directions::LEFT)
-        this->_mainCamera->getView()->move(-coef, 0.0);
+        this->_mainCamera->move(-coef, 0.0);
     else if (direction == Directions::RIGHT)
-        this->_mainCamera->getView()->move(coef, 0.0);
+        this->_mainCamera->move(coef, 0.0);
 }
 
 void          GraphicHandler::setFpsDebug(const bool &option)
@@ -117,7 +119,7 @@ const int     GraphicHandler::init()
     this->_clock = new sfx::FrameClock();
     this->_clockHUD = new ClockHUD(*this->_clock, this->_mainFont);
     this->_window->setFramerateLimit(60);
-    this->_mainCamera->init(sf::FloatRect(0, 0, this->_window->getSize().x, this->_window->getSize().y));
+    this->_mainCamera->init(this->_window->getSize().x, this->_window->getSize().y,sf::FloatRect(0, 0, this->_window->getSize().x, this->_window->getSize().y), this->_cameraDelimited, this->_cameraDelimitation);
     this->_window->setView(*this->_mainCamera->getView());
     return (0);
 }

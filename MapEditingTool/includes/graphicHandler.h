@@ -26,7 +26,7 @@ public:
         RIGHT = 3
     };
 public:
-    GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false, const float cameraSpeed=10.0);
+    GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, const bool cameraDelimited=false, const sf::IntRect &cameraDelimitation=sf::IntRect(0, 0, 0, 0), unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false, const float cameraSpeed=10.0);
     ~GraphicHandler();
     const int   init();
     void        loop();
@@ -67,6 +67,8 @@ private:
     CameraHandler  *_mainCamera;
     //Camera settings
     float           _cameraSpeed;
+    bool            _cameraDelimited;
+    sf::IntRect     _cameraDelimitation;
     //Thread loop
     sf::Thread   *_loop;
     //Handlers

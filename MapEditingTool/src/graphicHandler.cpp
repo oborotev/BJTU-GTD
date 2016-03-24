@@ -5,7 +5,7 @@
 #include "graphicHandler.h"
 
 GraphicHandler::GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth, unsigned int modeHeight, unsigned int modeBitsPerPixel,
-                const bool fixedSize, const bool fpsDebug)
+                const bool fixedSize, const bool fpsDebug, const float cameraSpeed)
 {
     this->_modeBitsPerPixel = !modeBitsPerPixel ? sf::VideoMode::getDesktopMode().bitsPerPixel : modeBitsPerPixel;
     this->_modeWidth = modeWidth;
@@ -19,6 +19,7 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
     this->_mainCamera = new CameraHandler();
     this->_mainFontPath = mainFontPath;
     this->_fpsDebug = fpsDebug;
+    this->_cameraSpeed = cameraSpeed;
 }
 
 GraphicHandler::~GraphicHandler() {
@@ -38,6 +39,11 @@ TilesetHandler*     GraphicHandler::getBaseMap()
 MediaHandler*       GraphicHandler::getMediaHandler()
 {
     return (this->_mediaHandler);
+}
+
+CameraHandler*      GraphicHandler::getCamera()
+{
+    return (this->_mainCamera);
 }
 
 void     GraphicHandler::drawBaseMap() const
@@ -60,9 +66,24 @@ void     GraphicHandler::loop()
     }
     if (this->_fpsDebug)
         this->_window->draw(*this->_clockHUD);
+    this->_window->setView(*this->_mainCamera->getView());
     this->_window->display();
     this->_window->clear(sf::Color::Black);
     this->_clock->endFrame();
+}
+
+void          GraphicHandler::moveCamera(const Directions &direction)
+{
+    int     coef = (this->_cameraSpeed * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
+
+    if (direction == Directions::UP)
+        this->_mainCamera->getView()->move(0.0, -coef);
+    else if (direction == Directions::DOWN)
+        this->_mainCamera->getView()->move(0.0, coef);
+    else if (direction == Directions::LEFT)
+        this->_mainCamera->getView()->move(-coef, 0.0);
+    else if (direction == Directions::RIGHT)
+        this->_mainCamera->getView()->move(coef, 0.0);
 }
 
 void          GraphicHandler::setFpsDebug(const bool &option)
@@ -83,17 +104,14 @@ const int     GraphicHandler::init()
     this->_clockHUD = new ClockHUD(*this->_clock, this->_mainFont);
     this->_window->setFramerateLimit(60);
     this->_mainCamera->init(sf::FloatRect(0, 0, this->_window->getSize().x, this->_window->getSize().y));
-    this->_window->setView(*this->_mainCamera->getCamera());
+    this->_window->setView(*this->_mainCamera->getView());
     return (0);
 }
-
-
 
 void    GraphicHandler::launch()
 {
     //this->_loop->launch();
     this->_isAlive = true;
-
 }
 
 void    GraphicHandler::terminate()
@@ -110,6 +128,7 @@ const bool      GraphicHandler::pollEvent()
     temp = this->_window->pollEvent(this->_event);
     return (temp);
 }
+
 
 const bool      GraphicHandler::eventTriggered(const sf::Event::EventType& eventType) const
 {

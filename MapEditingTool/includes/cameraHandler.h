@@ -13,7 +13,7 @@ public:
     CameraHandler() {};
     ~CameraHandler();
     void        init(const sf::FloatRect &rect);
-    sf::View*   getCamera() const;
+    sf::View*   getView() const;
 private:
     sf::View    *_camera;
 };

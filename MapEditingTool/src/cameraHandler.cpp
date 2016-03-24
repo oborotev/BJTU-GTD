@@ -14,7 +14,7 @@ CameraHandler::~CameraHandler()
     delete this->_camera;
 }
 
-sf::View*   CameraHandler::getCamera() const
+sf::View*   CameraHandler::getView() const
 {
     return (this->_camera);
 }

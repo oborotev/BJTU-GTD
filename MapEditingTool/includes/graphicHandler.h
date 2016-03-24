@@ -18,7 +18,15 @@
 class GraphicHandler
 {
 public:
-    GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false);
+    enum class Directions
+    {
+        UP = 0,
+        DOWN = 1,
+        LEFT = 2,
+        RIGHT = 3
+    };
+public:
+    GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false, const float cameraSpeed=10.0);
     ~GraphicHandler();
     const int   init();
     void        loop();
@@ -31,6 +39,9 @@ public:
     //Events
     const bool  pollEvent();
     const bool  eventTriggered(const sf::Event::EventType& eventType) const;
+    //Camera
+    CameraHandler*  getCamera();
+    void            moveCamera(const Directions &direction);
     //Debug
     void        setFpsDebug(const bool &option);
     //Drawing
@@ -51,6 +62,8 @@ private:
     sf::Event    _event;
     //Cameras
     CameraHandler  *_mainCamera;
+    //Camera settings
+    float           _cameraSpeed;
     //Thread loop
     sf::Thread   *_loop;
     //Handlers

@@ -69,6 +69,7 @@ void     GraphicHandler::loop()
     }
     if (this->_fpsDebug)
         this->_window->draw(*this->_clockHUD);
+    this->_mainCamera->updatePositionCenter();
     this->_window->setView(*this->_mainCamera->getView());
     this->_window->display();
     this->_window->clear(sf::Color::Black);
@@ -96,8 +97,8 @@ void            GraphicHandler::moveStaticObjects(const sf::Vector2i &vector)
     {
         std::cout << "offset x :" << it->second.offsets.x << std::endl;
         it->first->setPosition(
-                (this->_mainCamera->getView()->getCenter().x - (this->_window->getSize().x / 2)) + it->second.offsets.x,
-                (this->_mainCamera->getView()->getCenter().y - (this->_window->getSize().y / 2)) +
+                (this->_mainCamera->getCenterX() - (this->_window->getSize().x / 2)) + it->second.offsets.x,
+                (this->_mainCamera->getCenterY() - (this->_window->getSize().y / 2)) +
                 it->second.offsets.y);
     }
 }
@@ -110,24 +111,25 @@ void             GraphicHandler::moveCamera(const Directions &direction)
 
     if (direction == Directions::UP)
     {
-        offset = this->_mainCamera->move(0.0, -coef);
+        offset = this->_mainCamera->move(0.0, -coef, true);
         moved = true;
     }
     else if (direction == Directions::DOWN)
     {
-        offset = this->_mainCamera->move(0.0, coef);
+        offset = this->_mainCamera->move(0.0, coef, true);
         moved = true;
     }
     else if (direction == Directions::LEFT)
     {
-        offset = this->_mainCamera->move(-coef, 0.0);
+        offset = this->_mainCamera->move(-coef, 0.0, true);
         moved = true;
     }
     else if (direction == Directions::RIGHT)
     {
-        offset = this->_mainCamera->move(coef, 0.0);
+        offset = this->_mainCamera->move(coef, 0.0, true);
         moved = true;
     }
+    this->_window->setView(*this->_mainCamera->getView());
     if (moved)
         this->moveStaticObjects(offset);
 }

@@ -12,6 +12,8 @@ void        CameraHandler::init(int windowWidth, int windowHeight, const sf::Flo
     this->_camera = new sf::View(rect);
     this->_isDelimited = isDelimited;
     this->_delimitation = delimitation;
+    this->_centerX = this->_camera->getCenter().x;
+    this->_centerY = this->_camera->getCenter().y;
 }
 
 CameraHandler::~CameraHandler()
@@ -24,10 +26,28 @@ sf::View*   CameraHandler::getView() const
     return (this->_camera);
 }
 
-const sf::Vector2i   CameraHandler::move(const float &x, const float &y) const
+const float     &CameraHandler::getCenterX() const {
+    return (this->_centerX);
+}
+
+const float     &CameraHandler::getCenterY() const {
+    return (this->_centerY);
+}
+
+void        CameraHandler::updatePositionCenter(const float &x, const float &y)
 {
-    float   xCamera = (this->_camera->getCenter().x - (this->_windowWidth / 2)) + x;
-    float   yCamera = (this->_camera->getCenter().y - (this->_windowHeight / 2)) + y;
+    this->_camera->setCenter(x, y);
+}
+
+void        CameraHandler::updatePositionCenter()
+{
+    this->_camera->setCenter(this->_centerX, this->_centerY);
+}
+
+const sf::Vector2i   CameraHandler::move(const float &x, const float &y, const bool updateNow)
+{
+    float   xCamera = (this->_centerX - (this->_windowWidth / 2)) + x;
+    float   yCamera = (this->_centerY - (this->_windowHeight / 2)) + y;
     sf::Vector2i     blocked(0, 0);
     std::pair<bool, bool>             isBlocked = std::make_pair(false, false);
 
@@ -36,38 +56,40 @@ const sf::Vector2i   CameraHandler::move(const float &x, const float &y) const
     {
         if (xCamera < this->_delimitation.left)
         {
-            this->_camera->setCenter(this->_windowWidth / 2, this->_camera->getCenter().y);
+            this->_centerX = this->_windowWidth / 2;
             blocked.x = 0;
             isBlocked.first = true;
         }
         else if (xCamera > this->_delimitation.width)
         {
-            this->_camera->setCenter(this->_delimitation.width + (this->_windowWidth / 2), this->_camera->getCenter().y);
+            this->_centerX = this->_delimitation.width + (this->_windowWidth / 2);
             blocked.x = 0;
             isBlocked.first = true;
         }
         if (yCamera < this->_delimitation.top)
         {
-            this->_camera->setCenter(this->_camera->getCenter().x, this->_windowHeight / 2);
+            this->_centerY = this->_windowHeight / 2;
             blocked.y = 0;
             isBlocked.second = true;
         }
         else if (yCamera > this->_delimitation.height)
         {
-            this->_camera->setCenter(this->_camera->getCenter().x, this->_delimitation.height + (this->_windowHeight / 2));
+            this->_centerY = this->_delimitation.height + (this->_windowHeight / 2);
             blocked.y = 0;
             isBlocked.second = true;
         }
     }
     if (!isBlocked.first)
     {
-        this->_camera->move(x, 0);
+        this->_centerX += x;
         blocked.x = x;
     }
     if (!isBlocked.second)
     {
-        this->_camera->move(0, y);
+        this->_centerY += y;
         blocked.y = y;
     }
+    if (updateNow)
+        this->updatePositionCenter();
     return (blocked);
 }

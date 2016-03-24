@@ -14,13 +14,19 @@ public:
     ~CameraHandler();
     void        init(int windowWidth, int windowHeight, const sf::FloatRect &rect, const bool isDelimited=false, const sf::IntRect &delimitation=sf::IntRect(0, 0, 0, 0));
     sf::View*   getView() const;
-    const sf::Vector2i  move(const float &x, const float &y) const;
+    const float &getCenterX() const;
+    const float &getCenterY() const;
+    void        updatePositionCenter(const float &x, const float &y);
+    void        updatePositionCenter();
+    const sf::Vector2i  move(const float &x, const float &y, const bool updateNow=false);
 private:
     sf::View    *_camera;
     bool            _isDelimited;
     sf::IntRect     _delimitation;
     int           _windowWidth;
     int           _windowHeight;
+    float         _centerX;
+    float         _centerY;
 };
 
 #endif //MAPEDITINGTOOL_CAMERAHANDLER_H

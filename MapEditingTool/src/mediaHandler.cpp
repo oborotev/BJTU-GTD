@@ -39,6 +39,7 @@ const int   MediaHandler::addNewShape(sf::Shape *shape, const std::string &name,
         staticParams.name = name;
         staticParams.offsets = sf::Vector2f(position.x, position.y);
         this->_staticElems.emplace_back(std::make_pair(shape, staticParams));
+        this->_staticElems.back().first->setPosition(804, 0);
     }
     this->_shapes.emplace_back(std::make_pair(shape, name));
     return (0);

@@ -90,10 +90,16 @@ bool          GraphicHandler::isKeyDown(const sf::Keyboard::Key &key)
 
 void            GraphicHandler::moveStaticObjects(const sf::Vector2i &vector)
 {
-    std::vector<std::pair<sf::Transformable *, const std::string>> staticElems = this->_mediaHandler->getStaticElems();
+    std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>> staticElems = this->_mediaHandler->getStaticElems();
 
-    for (std::vector<std::pair<sf::Transformable *, const std::string>>::iterator it = staticElems.begin(); it < staticElems.end(); it++)
-        it->first->move(vector.x, vector.y);
+    for (std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>>::iterator it = staticElems.begin(); it < staticElems.end(); it++)
+    {
+        std::cout << "offset x :" << it->second.offsets.x << std::endl;
+        it->first->setPosition(
+                (this->_mainCamera->getView()->getCenter().x - (this->_window->getSize().x / 2)) + it->second.offsets.x,
+                (this->_mainCamera->getView()->getCenter().y - (this->_window->getSize().y / 2)) +
+                it->second.offsets.y);
+    }
 }
 
 void             GraphicHandler::moveCamera(const Directions &direction)

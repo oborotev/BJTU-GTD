@@ -30,15 +30,21 @@ const int   MediaHandler::addNewTexture(const std::string &path, const std::stri
     return (0);
 }
 
-const int   MediaHandler::addNewShape(sf::Shape *shape, const std::string &name, const bool isGui)
+const int   MediaHandler::addNewShape(sf::Shape *shape, const std::string &name, const bool isGui, const sf::Vector2i &position)
 {
     if (isGui)
-        this->_staticElems.emplace_back(std::make_pair(shape, name));
+    {
+        MediaHandler::t_staticParameters staticParams;
+
+        staticParams.name = name;
+        staticParams.offsets = sf::Vector2f(position.x, position.y);
+        this->_staticElems.emplace_back(std::make_pair(shape, staticParams));
+    }
     this->_shapes.emplace_back(std::make_pair(shape, name));
     return (0);
 }
 
-std::vector<std::pair<sf::Transformable *, const std::string>>   &MediaHandler::getStaticElems()
+std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>>   &MediaHandler::getStaticElems()
 {
     return (this->_staticElems);
 }

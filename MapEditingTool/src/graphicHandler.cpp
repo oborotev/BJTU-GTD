@@ -4,7 +4,7 @@
 
 #include "graphicHandler.h"
 
-GraphicHandler::GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth, unsigned int modeHeight, const bool cameraDelimited, const sf::IntRect &cameraDelimitation, unsigned int modeBitsPerPixel,
+GraphicHandler::GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth, unsigned int modeHeight, const bool resizable, const bool cameraDelimited, const sf::IntRect &cameraDelimitation, unsigned int modeBitsPerPixel,
                 const bool fixedSize, const bool fpsDebug, const float cameraSpeed)
 {
     this->_modeBitsPerPixel = !modeBitsPerPixel ? sf::VideoMode::getDesktopMode().bitsPerPixel : modeBitsPerPixel;
@@ -22,6 +22,7 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
     this->_cameraSpeed = cameraSpeed;
     this->_cameraDelimitation = cameraDelimitation;
     this->_cameraDelimited = cameraDelimited;
+    this->_resizable = resizable;
     this->_keyStates.fill(false);
 }
 
@@ -69,7 +70,6 @@ void     GraphicHandler::loop()
     }
     if (this->_fpsDebug)
         this->_window->draw(*this->_clockHUD);
-    this->_mainCamera->updatePositionCenter();
     this->_window->setView(*this->_mainCamera->getView());
     this->_window->display();
     this->_window->clear(sf::Color::Black);
@@ -95,10 +95,9 @@ void            GraphicHandler::moveStaticObjects(const sf::Vector2i &vector)
 
     for (std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>>::iterator it = staticElems.begin(); it < staticElems.end(); it++)
     {
-        std::cout << "offset x :" << it->second.offsets.x << std::endl;
         it->first->setPosition(
-                (this->_mainCamera->getCenterX() - (this->_window->getSize().x / 2)) + it->second.offsets.x,
-                (this->_mainCamera->getCenterY() - (this->_window->getSize().y / 2)) +
+                (this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + it->second.offsets.x,
+                (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) +
                 it->second.offsets.y);
     }
 }
@@ -106,6 +105,7 @@ void            GraphicHandler::moveStaticObjects(const sf::Vector2i &vector)
 void             GraphicHandler::moveCamera(const Directions &direction)
 {
     double       coef = (this->_cameraSpeed * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
+
     sf::Vector2i offset(0, 0);
     bool moved = false;
 
@@ -141,7 +141,10 @@ void          GraphicHandler::setFpsDebug(const bool &option)
 
 const int     GraphicHandler::init()
 {
-    this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title, sf::Style::Close);
+    if (_resizable)
+        this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
+    if (!_resizable)
+        this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title, sf::Style::Close);
     if (this->_mainFontPath != "")
         if (!this->_mainFont.loadFromFile(this->_mainFontPath))
         {
@@ -173,6 +176,8 @@ const bool      GraphicHandler::pollEvent()
     bool        temp;
 
     this->_clock->beginFrame();
+    if (_resizable)
+        this->_mainCamera->updateWindowSize(this->_window->getSize().x, this->_window->getSize().y);
     temp = this->_window->pollEvent(this->_event);
     return (temp);
 }

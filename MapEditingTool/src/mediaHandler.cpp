@@ -77,6 +77,8 @@ const int   MediaHandler::addNewSprite(const std::string &textureName)
 
 sf::Shape* MediaHandler::getShape(const std::string &name)
 {
+    if (this->_shapes.size() == 0)
+        return (NULL);
     auto it = std::find_if(this->_shapes.begin(), this->_shapes.end(), [&name](const std::pair<sf::Shape *, const std::string>& obj) {return obj.second == name;});
     if (it != this->_shapes.end())
         return (it->first);

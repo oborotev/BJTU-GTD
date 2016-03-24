@@ -26,7 +26,7 @@ public:
         RIGHT = 3
     };
 public:
-    GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, const bool cameraDelimited=false, const sf::IntRect &cameraDelimitation=sf::IntRect(0, 0, 0, 0), unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false, const float cameraSpeed=10.0);
+    GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, const bool resizable=false, const bool cameraDelimited=false, const sf::IntRect &cameraDelimitation=sf::IntRect(0, 0, 0, 0), unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false, const float cameraSpeed=10.0);
     ~GraphicHandler();
     const int   init();
     void        loop();
@@ -58,6 +58,7 @@ private:
     unsigned int _modeHeight;
     unsigned int _modeBitsPerPixel;
     std::string  _title;
+    bool         _resizable;
     //Window options
     bool         _fixedSize;
     //Event object

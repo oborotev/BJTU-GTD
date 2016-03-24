@@ -34,6 +34,12 @@ const float     &CameraHandler::getCenterY() const {
     return (this->_centerY);
 }
 
+void        CameraHandler::updateWindowSize(const int &windowWidth, const int &windowHeight)
+{
+    this->_windowWidth = windowWidth;
+    this->_windowHeight = windowHeight;
+}
+
 void        CameraHandler::updatePositionCenter(const float &x, const float &y)
 {
     this->_camera->setCenter(x, y);

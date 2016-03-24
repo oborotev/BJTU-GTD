@@ -11,9 +11,11 @@ void        MediaHandler::wipeAll()
     this->_textures.clear();
     for (std::vector<std::pair<sf::Sprite *, const std::string>>::iterator it = this->_sprites.begin(); it != this->_sprites.end(); ++it)
         delete it->first;
+    this->_sprites.clear();
     for (std::vector<std::pair<sf::Shape *, const std::string>>::iterator it = this->_shapes.begin(); it != this->_shapes.end(); ++it)
         delete it->first;
-    this->_sprites.clear();
+    this->_shapes.clear();
+    this->_staticElems.clear();
 }
 
 const int   MediaHandler::addNewTexture(const std::string &path, const std::string &name)
@@ -28,10 +30,17 @@ const int   MediaHandler::addNewTexture(const std::string &path, const std::stri
     return (0);
 }
 
-const int   MediaHandler::addNewShape(sf::Shape *shape, const std::string &name)
+const int   MediaHandler::addNewShape(sf::Shape *shape, const std::string &name, const bool isGui)
 {
+    if (isGui)
+        this->_staticElems.emplace_back(std::make_pair(shape, name));
     this->_shapes.emplace_back(std::make_pair(shape, name));
     return (0);
+}
+
+std::vector<std::pair<sf::Transformable *, const std::string>>   &MediaHandler::getStaticElems()
+{
+    return (this->_staticElems);
 }
 
 const int   MediaHandler::addNewSprite(const std::string &textureName)

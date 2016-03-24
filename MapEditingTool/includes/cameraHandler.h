@@ -14,7 +14,7 @@ public:
     ~CameraHandler();
     void        init(int windowWidth, int windowHeight, const sf::FloatRect &rect, const bool isDelimited=false, const sf::IntRect &delimitation=sf::IntRect(0, 0, 0, 0));
     sf::View*   getView() const;
-    const int   move(const float &x, const float &y) const;
+    const sf::Vector2i  move(const float &x, const float &y) const;
 private:
     sf::View    *_camera;
     bool            _isDelimited;

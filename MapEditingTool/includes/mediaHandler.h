@@ -16,17 +16,19 @@ public:
     ~MediaHandler() {};
     const int   addNewTexture(const std::string &path, const std::string &name);
     const int   addNewSprite(const std::string &textureName);
-    const int   addNewShape(sf::Shape *shape, const std::string &shapeName);
+    const int   addNewShape(sf::Shape *shape, const std::string &shapeName, const bool isGui=false);
     sf::Shape   *getShape(const std::string &name);
     sf::Texture *getTexture(const std::string &name);
     sf::Sprite  getSprite(const std::string &name);
+    std::vector<std::pair<sf::Transformable *, const std::string>> &getStaticElems();
     //Clean the vectors
     void        wipeAll();
 
 private:
-    std::vector<std::pair<sf::Texture *, const std::string>> _textures;
-    std::vector<std::pair<sf::Sprite *, const std::string>>  _sprites;
-    std::vector<std::pair<sf::Shape *, const std::string>>   _shapes;
+    std::vector<std::pair<sf::Texture *, const std::string>>  _textures;
+    std::vector<std::pair<sf::Sprite *, const std::string>>   _sprites;
+    std::vector<std::pair<sf::Shape *, const std::string>>    _shapes;
+    std::vector<std::pair<sf::Transformable *, const std::string>> _staticElems;
 };
 
 #endif //MAPEDITINGTOOL_MEDIAHANDLER_H

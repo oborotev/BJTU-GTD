@@ -88,18 +88,42 @@ bool          GraphicHandler::isKeyDown(const sf::Keyboard::Key &key)
         return (true);
 }
 
-void          GraphicHandler::moveCamera(const Directions &direction)
+void            GraphicHandler::moveStaticObjects(const sf::Vector2i &vector)
 {
-    int     coef = (this->_cameraSpeed * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
+    std::vector<std::pair<sf::Transformable *, const std::string>> staticElems = this->_mediaHandler->getStaticElems();
+
+    for (std::vector<std::pair<sf::Transformable *, const std::string>>::iterator it = staticElems.begin(); it < staticElems.end(); it++)
+        it->first->move(vector.x, vector.y);
+}
+
+void             GraphicHandler::moveCamera(const Directions &direction)
+{
+    int          coef = (this->_cameraSpeed * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
+    sf::Vector2i offset(0, 0);
+    bool moved = false;
 
     if (direction == Directions::UP)
-        this->_mainCamera->move(0.0, -coef);
+    {
+        offset = this->_mainCamera->move(0.0, -coef);
+        moved = true;
+    }
     else if (direction == Directions::DOWN)
-        this->_mainCamera->move(0.0, coef);
+    {
+        offset = this->_mainCamera->move(0.0, coef);
+        moved = true;
+    }
     else if (direction == Directions::LEFT)
-        this->_mainCamera->move(-coef, 0.0);
+    {
+        offset = this->_mainCamera->move(-coef, 0.0);
+        moved = true;
+    }
     else if (direction == Directions::RIGHT)
-        this->_mainCamera->move(coef, 0.0);
+    {
+        offset = this->_mainCamera->move(coef, 0.0);
+        moved = true;
+    }
+    if (moved)
+        this->moveStaticObjects(offset);
 }
 
 void          GraphicHandler::setFpsDebug(const bool &option)

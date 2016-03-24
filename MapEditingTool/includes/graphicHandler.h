@@ -47,6 +47,7 @@ public:
     void        setFpsDebug(const bool &option);
     //Drawing
     void        draw(const sf::Drawable &drawable) const;
+    void        moveStaticObjects(const sf::Vector2i &vector);
     //Mutex
     sf::Mutex   _mutex;
 private:

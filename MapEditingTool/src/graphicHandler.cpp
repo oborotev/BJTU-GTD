@@ -105,7 +105,7 @@ void            GraphicHandler::moveStaticObjects(const sf::Vector2i &vector)
 
 void             GraphicHandler::moveCamera(const Directions &direction)
 {
-    int          coef = (this->_cameraSpeed * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
+    double       coef = (this->_cameraSpeed * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
     sf::Vector2i offset(0, 0);
     bool moved = false;
 

@@ -51,7 +51,6 @@ const sf::Vector2i   CameraHandler::move(const float &x, const float &y, const b
     sf::Vector2i     blocked(0, 0);
     std::pair<bool, bool>             isBlocked = std::make_pair(false, false);
 
-    std::cout << "xCamera :" << xCamera << " yCamera: " << yCamera << std::endl;
     if (this->_isDelimited)
     {
         if (xCamera < this->_delimitation.left)
@@ -82,12 +81,12 @@ const sf::Vector2i   CameraHandler::move(const float &x, const float &y, const b
     if (!isBlocked.first)
     {
         this->_centerX += x;
-        blocked.x = x;
+        blocked.x = static_cast<int>(x);
     }
     if (!isBlocked.second)
     {
         this->_centerY += y;
-        blocked.y = y;
+        blocked.y = static_cast<int>(y);
     }
     if (updateNow)
         this->updatePositionCenter();

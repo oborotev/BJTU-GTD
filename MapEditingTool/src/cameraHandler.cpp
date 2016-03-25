@@ -43,10 +43,8 @@ void        CameraHandler::updateWindowSize(const int &windowWidth, const int &w
 void        CameraHandler::setDelimitation(const sf::IntRect &delimitation)
 {
     this->_delimitation = delimitation;
-    if (delimitation.height != 0 || delimitation.top != 0 || delimitation.left != 0 && delimitation.width != 0)
-        this->_isDelimited = true;
-    else
-        this->_isDelimited = false;
+    this->_isDelimited =
+            delimitation.height != 0 || delimitation.top != 0 || delimitation.left != 0 || delimitation.width != 0;
 }
 
 void        CameraHandler::updatePositionCenter(const float &x, const float &y)

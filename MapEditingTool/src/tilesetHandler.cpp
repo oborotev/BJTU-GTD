@@ -63,7 +63,7 @@ const int           TilesetHandler::load(const std::string& level_path)
     }
 }
 
-const int           TilesetHandler::init(sf::Texture *tileset, sf::Vector2u tileSize, const std::string& level_path, unsigned int width, unsigned int height)
+const int           TilesetHandler::init(sf::Texture *tileset, sf::Vector2u tileSize, const std::string& level_path, unsigned int width, unsigned int height, int* tileDefinition)
 {
     bool        isFile = false;
 
@@ -76,7 +76,7 @@ const int           TilesetHandler::init(sf::Texture *tileset, sf::Vector2u tile
     }
 
     this->_tileset = tileset;
-
+    this->_tileDefinition = tileDefinition;
     _vertices.setPrimitiveType(sf::Quads);
     _vertices.resize(this->_width * this->_height * 4);
 

@@ -21,10 +21,20 @@ public:
     ClockHUD(const sfx::FrameClock& clock, const sf::Font& font)
             : m_clock (&clock)
             , m_font  (&font)
-    {}
+    {
+        _posX = 800.0f;
+        _posY = 600.0f;
+    }
 
+public:
+    float   _posX;
+    float   _posY;
+    void setPosXY(const float &posX, const float &posY)
+    {
+        _posX = posX;
+        _posY = posY;
+    }
 private:
-
     void draw(sf::RenderTarget& rt, sf::RenderStates states) const
     {
         // Gather the available frame time statistics.
@@ -33,7 +43,7 @@ private:
         sf::Text elem;
         elem.setFont(*m_font);
         elem.setCharacterSize(16);
-        elem.setPosition(800.0f, 580.0f);
+        elem.setPosition(_posX, _posY);
 
         // Draw the available frame time statistics.
         for (std::size_t i = 0; i < stats.size(); ++i)

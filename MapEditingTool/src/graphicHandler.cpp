@@ -100,6 +100,7 @@ void            GraphicHandler::moveStaticObjects(const sf::Vector2i &vector)
                 (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) +
                 it->second.offsets.y);
     }
+    this->_clockHUD->setPosXY((this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + 800, (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) + 600);
 }
 
 void             GraphicHandler::moveCamera(const Directions &direction)
@@ -183,8 +184,10 @@ const bool      GraphicHandler::pollEvent()
 }
 
 
-const bool      GraphicHandler::eventTriggered(const sf::Event::EventType& eventType) const
+const bool      GraphicHandler::eventTriggered(const sf::Event::EventType& eventType)
 {
+    if (this->_event.type == sf::Event::KeyReleased && this->_event.key.code == sf::Keyboard::F9)
+        this->_fpsDebug = !this->_fpsDebug;
     if (this->_event.type == eventType)
         return (true);
     return (false);

@@ -11,13 +11,17 @@ MapEditor::~MapEditor()
 
 const int       MapEditor::init()
 {
+    std::array<int, 171> tileDefinition;
+
+    tileDefinition.fill(1);
+    tileDefinition[3] = TilesetHandler::FREE;
     this->_graphicHandler = new GraphicHandler("Map Editor", "../../common/media/fonts/DTM-Mono.otf", 1024, 768, false, true, sf::IntRect(0,0, 1200, 800));
     this->_tilesetHandler = this->_graphicHandler->getBaseMap();
     this->_mediaHandler = this->_graphicHandler->getMediaHandler();
     this->_mediaHandler->addNewTexture("../media/textures/tileset.gif", "map_tileset");
     this->_mediaHandler->addNewShape(new sf::RectangleShape(sf::Vector2f(240, 768)), "tile_choose_bg", true, sf::Vector2i(804, 0));
     this->_mediaHandler->getShape("tile_choose_bg")->setFillColor(sf::Color(0, 31, 63));
-    this->_tilesetHandler->init(this->_mediaHandler->getTexture("map_tileset"), sf::Vector2u(32, 32), "../media/maps/base");
+    this->_tilesetHandler->init(this->_mediaHandler->getTexture("map_tileset"), sf::Vector2u(32, 32), "../media/maps/base", 0, 0, tileDefinition.data());
     this->_graphicHandler->setFpsDebug(true);
     return 0;
 }

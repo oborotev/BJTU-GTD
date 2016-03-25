@@ -40,6 +40,15 @@ void        CameraHandler::updateWindowSize(const int &windowWidth, const int &w
     this->_windowHeight = windowHeight;
 }
 
+void        CameraHandler::setDelimitation(const sf::IntRect &delimitation)
+{
+    this->_delimitation = delimitation;
+    if (delimitation.height != 0 || delimitation.top != 0 || delimitation.left != 0 && delimitation.width != 0)
+        this->_isDelimited = true;
+    else
+        this->_isDelimited = false;
+}
+
 void        CameraHandler::updatePositionCenter(const float &x, const float &y)
 {
     this->_camera->setCenter(x, y);

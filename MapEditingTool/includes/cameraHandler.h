@@ -19,6 +19,7 @@ public:
     void        updatePositionCenter(const float &x, const float &y);
     void        updatePositionCenter();
     void        updateWindowSize(const int &windowWidth, const int &windowHeight);
+    void        setDelimitation(const sf::IntRect& delimitation);
     const sf::Vector2i  move(const float &x, const float &y, const bool updateNow=false);
 private:
     sf::View    *_camera;

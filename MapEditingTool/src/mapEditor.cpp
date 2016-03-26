@@ -35,7 +35,6 @@ const int       MapEditor::init()
     this->_graphicHandler->getPlayer()->addFrameState(LivingEntity::Direction::DOWN, sf::IntRect(24, 0, 19, 29));
     this->_graphicHandler->getPlayer()->addFrameState(LivingEntity::Direction::DOWN, sf::IntRect(0, 0, 19, 29));
     this->_graphicHandler->getPlayer()->addFrameState(LivingEntity::Direction::DOWN, sf::IntRect(48, 0, 19, 29));
-    this->_graphicHandler->cameraOnEntity(this->_graphicHandler->getPlayer());
     //Player Init End
     this->_mediaHandler->addNewShape(new sf::RectangleShape(sf::Vector2f(240, 768)), "tile_choose_bg", true, sf::Vector2i(804, 0));
     this->_mediaHandler->getShape("tile_choose_bg")->setFillColor(sf::Color(0, 31, 63));

@@ -14,6 +14,7 @@
 # include "frameClock.h"
 # include "clockHUD.h"
 # include "cameraHandler.h"
+# include "player.h"
 
 class GraphicHandler
 {
@@ -43,11 +44,15 @@ public:
     //Camera
     CameraHandler*  getCamera();
     void            moveCamera(const Directions &direction);
+    void            cameraOnEntity(Entity *entity);
     //Debug
     void        setFpsDebug(const bool &option);
     //Drawing
     void        draw(const sf::Drawable &drawable) const;
     void        moveStaticObjects(const sf::Vector2i &vector);
+    //Player
+    void        initPlayer(const int &x, const int &y, const int &hp, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
+    Player*     getPlayer() const;
     //Mutex
     sf::Mutex   _mutex;
 private:
@@ -71,6 +76,7 @@ private:
     float           _cameraSpeed;
     bool            _cameraDelimited;
     sf::IntRect     _cameraDelimitation;
+    Entity*         _cameraOnEntity;
     //Thread loop
     sf::Thread   *_loop;
     //Handlers
@@ -81,6 +87,8 @@ private:
     //Clock
     sfx::FrameClock *_clock;
     ClockHUD        *_clockHUD;
+    //Player
+    Player*         _player;
     //Fonts
     std::string      _mainFontPath;
     sf::Font         _mainFont;

@@ -11,10 +11,11 @@
 class Entity
 {
 public:
-    Entity(const int &x, const int &y, const int &hp);
+    Entity(const int &x, const int &y);
     ~Entity() {};
+    const int &getX();
+    const int &getY();
 protected:
-    int     _hp;
     std::vector<std::string> _dialogs;
     int     _x;
     int     _y;

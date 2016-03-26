@@ -4,9 +4,18 @@
 
 # include "entity.h"
 
-Entity::Entity(const int &x, const int &y, const int &hp)
+Entity::Entity(const int &x, const int &y)
 {
     this->_x = x;
     this->_y = y;
-    this->_hp = hp;
+}
+
+const int &Entity::getX()
+{
+    return (this->_x);
+}
+
+const int &Entity::getY()
+{
+    return (this->_y);
 }

@@ -24,6 +24,7 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
     this->_cameraDelimited = cameraDelimited;
     this->_resizable = resizable;
     this->_keyStates.fill(false);
+    this->_cameraOnEntity = NULL;
 }
 
 GraphicHandler::~GraphicHandler() {
@@ -33,6 +34,8 @@ GraphicHandler::~GraphicHandler() {
     delete this->_clock;
     delete this->_clockHUD;
     delete this->_mainCamera;
+    if (this->_player)
+        delete this->_player;
 }
 
 TilesetHandler*     GraphicHandler::getBaseMap()
@@ -70,6 +73,8 @@ void     GraphicHandler::loop()
     }
     if (this->_fpsDebug)
         this->_window->draw(*this->_clockHUD);
+    if (this->_cameraOnEntity)
+        this->_mainCamera->updatePositionCenter(this->_cameraOnEntity->getX(), this->_cameraOnEntity->getY());
     this->_window->setView(*this->_mainCamera->getView());
     this->_window->display();
     this->_window->clear(sf::Color::Black);
@@ -196,4 +201,19 @@ const bool      GraphicHandler::eventTriggered(const sf::Event::EventType& event
 const bool      GraphicHandler::getIsAlive()
 {
     return this->_isAlive;
+}
+
+void    GraphicHandler::cameraOnEntity(Entity *entity)
+{
+    this->_cameraOnEntity = entity;
+}
+
+void    GraphicHandler::initPlayer(const int &x, const int &y, const int &hp, const bool animated, const sf::Time &animationSpeed, sf::Texture *spriteSheet)
+{
+    this->_player = new Player(x, y, hp, animated, animationSpeed, spriteSheet);
+}
+
+Player* GraphicHandler::getPlayer() const
+{
+    return (this->_player);
 }

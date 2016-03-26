@@ -184,7 +184,7 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
             this->_window->setView(*this->_mainCamera->getView());
         }
         entity->changeDirection(LivingEntity::Direction::RIGHT);
-        entity->move(-coef, 0);
+        entity->move(coef, 0);
         moved = true;
     }
     if (isPlayer)

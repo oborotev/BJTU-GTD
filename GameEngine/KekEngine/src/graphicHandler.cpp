@@ -73,7 +73,7 @@ void     GraphicHandler::loop()
     }
     if (this->_fpsDebug)
         this->_window->draw(*this->_clockHUD);
-    if (!_playerMoved)
+    if (!_playerMoved && _player)
         this->_player->changeDirection(LivingEntity::Direction::STILL);
     _playerMoved = false;
     this->_window->setView(*this->_mainCamera->getView());

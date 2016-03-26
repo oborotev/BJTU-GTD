@@ -20,6 +20,7 @@ const int       MapEditor::init()
     this->_mediaHandler = this->_graphicHandler->getMediaHandler();
     this->_mediaHandler->addNewTexture("../media/textures/tileset.gif", "map_tileset");
     this->_mediaHandler->addNewTexture("../media/textures/arrow-right.png", "arrow_right");
+    /*
     //Player Init
     this->_mediaHandler->addNewTexture("../../common/media/textures/frisk.png", "frisky");
     this->_graphicHandler->initPlayer(500, 500, 20, 10.0, true, sf::seconds(0.2), this->_mediaHandler->getTexture("frisky"));
@@ -36,6 +37,7 @@ const int       MapEditor::init()
     this->_graphicHandler->getPlayer()->addFrameState(LivingEntity::Direction::DOWN, sf::IntRect(0, 0, 19, 29));
     this->_graphicHandler->getPlayer()->addFrameState(LivingEntity::Direction::DOWN, sf::IntRect(48, 0, 19, 29));
     //Player Init End
+     */
     this->_mediaHandler->addNewShape(new sf::RectangleShape(sf::Vector2f(240, 768)), "tile_choose_bg", true, sf::Vector2i(804, 0));
     this->_mediaHandler->getShape("tile_choose_bg")->setFillColor(sf::Color(0, 31, 63));
     this->_mediaHandler->addNewSprite(this->_mediaHandler->getTexture("arrow_right"), "arrow_right");
@@ -58,16 +60,22 @@ const int       MapEditor::start()
             if (this->_graphicHandler->eventTriggered(sf::Event::Closed))
                 this->_graphicHandler->terminate();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::LEFT, true, true);
+            this->_graphicHandler->moveCamera(GraphicHandler::Directions::LEFT);
+            //this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::LEFT, true, true);
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::RIGHT, true, true);
+            this->_graphicHandler->moveCamera(GraphicHandler::Directions::RIGHT);
+            //this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::RIGHT, true, true);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::UP, true, true);
+            this->_graphicHandler->moveCamera(GraphicHandler::Directions::UP);
+            //this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::UP, true, true);
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::DOWN, true, true);
+            this->_graphicHandler->moveCamera(GraphicHandler::Directions::DOWN);
+            //this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::DOWN, true, true);
         this->_graphicHandler->drawBaseMap();
+        /*
         this->_graphicHandler->getPlayer()->update(this->_graphicHandler->getClock()->getLastFrameTime());
         this->_graphicHandler->draw(*this->_graphicHandler->getPlayer()->getAnimation());
+         */
         this->_graphicHandler->draw(*this->_mediaHandler->getShape("tile_choose_bg"));
         this->_graphicHandler->draw(*this->_mediaHandler->getSprite("arrow_right"));
         this->_graphicHandler->loop();

@@ -10,7 +10,7 @@
 class Player : public LivingEntity
 {
 public:
-    Player(const int &x, const int &y, const int &hp, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
+    Player(const int &x, const int &y, const int &hp, const float &speed=10.0, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
     ~Player() {}
 };
 

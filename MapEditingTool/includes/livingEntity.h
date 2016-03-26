@@ -15,23 +15,25 @@ class LivingEntity : public Entity
 public:
     enum Direction {
         STILL = 0,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        DirectionCount
+        UP = 1,
+        DOWN = 2,
+        LEFT = 3,
+        RIGHT = 4,
+        DirectionCount = 5
     };
 public:
-    LivingEntity(const int &x, const int &y, const int &hp, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
+    LivingEntity(const int &x, const int &y, const int &hp, const float &speed=10.0, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
     ~LivingEntity() {};
     void    addFrameState(const LivingEntity::Direction &direction, const sf::IntRect &rect);
     void    changeDirection(const LivingEntity::Direction &direction);
     void    move(const float &x, const float &y);
     void    update(const sf::Time &time);
-    AnimatedSprite* getAnimation();
+    const float &getSpeed() const;
+    AnimatedSprite* getAnimation() const;
 protected:
     int _hp;
     bool _animated;
+    float _speed;
     sf::Time _animationSpeed;
     std::array<Animation*, LivingEntity::DirectionCount> _animations;
     AnimatedSprite *_animation;

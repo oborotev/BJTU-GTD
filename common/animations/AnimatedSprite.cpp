@@ -22,6 +22,7 @@
 ////////////////////////////////////////////////////////////
 
 #include "AnimatedSprite.hpp"
+#include <iostream>
 
 AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
         m_animation(NULL), m_frameTime(frameTime), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL)

@@ -73,8 +73,9 @@ void     GraphicHandler::loop()
     }
     if (this->_fpsDebug)
         this->_window->draw(*this->_clockHUD);
-    if (this->_cameraOnEntity)
-        this->_mainCamera->updatePositionCenter(this->_cameraOnEntity->getX(), this->_cameraOnEntity->getY());
+    if (!_playerMoved)
+        this->_player->changeDirection(LivingEntity::Direction::STILL);
+    _playerMoved = false;
     this->_window->setView(*this->_mainCamera->getView());
     this->_window->display();
     this->_window->clear(sf::Color::Black);
@@ -138,6 +139,53 @@ void             GraphicHandler::moveCamera(const Directions &direction)
     this->_window->setView(*this->_mainCamera->getView());
     if (moved)
         this->moveStaticObjects(offset);
+}
+
+void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera)
+{
+    double       coef = (entity->getSpeed() * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
+
+    if (direction == LivingEntity::Direction::UP)
+    {
+        if (moveCamera)
+        {
+            this->_mainCamera->getView()->move(0, -coef);
+            this->_window->setView(*this->_mainCamera->getView());
+        }
+        entity->changeDirection(LivingEntity::Direction::UP);
+        entity->move(0, -coef);
+        _playerMoved = true;
+    }
+    else if (direction == LivingEntity::Direction::DOWN)
+    {
+        if (moveCamera) {
+            this->_mainCamera->getView()->move(0, coef);
+            this->_window->setView(*this->_mainCamera->getView());
+        }
+        entity->changeDirection(LivingEntity::Direction::DOWN);
+        entity->move(0, coef);
+        _playerMoved = true;
+    }
+    else if (direction == LivingEntity::Direction::LEFT)
+    {
+        if (moveCamera) {
+            this->_mainCamera->getView()->move(-coef, 0);
+            this->_window->setView(*this->_mainCamera->getView());
+        }
+        entity->changeDirection(LivingEntity::Direction::LEFT);
+        entity->move(-coef, 0);
+        _playerMoved = true;
+    }
+    else if (direction == LivingEntity::Direction::RIGHT)
+    {
+        if (moveCamera) {
+            this->_mainCamera->getView()->move(coef, 0);
+            this->_window->setView(*this->_mainCamera->getView());
+        }
+        entity->changeDirection(LivingEntity::Direction::RIGHT);
+        entity->move(-coef, 0);
+        _playerMoved = true;
+    }
 }
 
 void          GraphicHandler::setFpsDebug(const bool &option)
@@ -208,9 +256,14 @@ void    GraphicHandler::cameraOnEntity(Entity *entity)
     this->_cameraOnEntity = entity;
 }
 
-void    GraphicHandler::initPlayer(const int &x, const int &y, const int &hp, const bool animated, const sf::Time &animationSpeed, sf::Texture *spriteSheet)
+void    GraphicHandler::initPlayer(const int &x, const int &y, const int &hp, const float &speed, const bool animated, const sf::Time &animationSpeed, sf::Texture *spriteSheet)
 {
-    this->_player = new Player(x, y, hp, animated, animationSpeed, spriteSheet);
+    this->_player = new Player(x, y, hp, speed, animated, animationSpeed, spriteSheet);
+}
+
+sfx::FrameClock* GraphicHandler::getClock() const
+{
+    return this->_clock;
 }
 
 Player* GraphicHandler::getPlayer() const

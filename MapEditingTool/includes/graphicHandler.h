@@ -50,9 +50,13 @@ public:
     //Drawing
     void        draw(const sf::Drawable &drawable) const;
     void        moveStaticObjects(const sf::Vector2i &vector);
+    //Entities
+    void        moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera=false);
     //Player
-    void        initPlayer(const int &x, const int &y, const int &hp, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
+    void        initPlayer(const int &x, const int &y, const int &hp, const float &speed=10.0, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
     Player*     getPlayer() const;
+    //CLock
+    sfx::FrameClock* getClock() const;
     //Mutex
     sf::Mutex   _mutex;
 private:
@@ -89,6 +93,7 @@ private:
     ClockHUD        *_clockHUD;
     //Player
     Player*         _player;
+    bool            _playerMoved;
     //Fonts
     std::string      _mainFontPath;
     sf::Font         _mainFont;

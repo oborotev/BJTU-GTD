@@ -39,7 +39,7 @@ const int   MediaHandler::addNewShape(sf::Shape *shape, const std::string &name,
         staticParams.name = name;
         staticParams.offsets = sf::Vector2f(position.x, position.y);
         this->_staticElems.emplace_back(std::make_pair(shape, staticParams));
-        this->_staticElems.back().first->setPosition(804, 0);
+        this->_staticElems.back().first->setPosition(staticParams.offsets.x, staticParams.offsets.y);
     }
     this->_shapes.emplace_back(std::make_pair(shape, name));
     return (0);
@@ -50,10 +50,19 @@ std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>>   
     return (this->_staticElems);
 }
 
-const int   MediaHandler::addNewSprite(sf::Texture *texture, const std::string &spriteName)
+const int   MediaHandler::addNewSprite(sf::Texture *texture, const std::string &spriteName, const bool isGui, const sf::Vector2i &position)
 {
     this->_sprites.emplace_back(std::make_pair(new sf::Sprite, spriteName));
     this->_sprites.back().first->setTexture(*texture);
+    if (isGui)
+    {
+        MediaHandler::t_staticParameters staticParams;
+
+        staticParams.name = spriteName;
+        staticParams.offsets = sf::Vector2f(position.x, position.y);
+        this->_staticElems.emplace_back(std::make_pair(this->_sprites.back().first, staticParams));
+        this->_staticElems.back().first->setPosition(staticParams.offsets.x, staticParams.offsets.y);
+    }
     return (0);
 }
 

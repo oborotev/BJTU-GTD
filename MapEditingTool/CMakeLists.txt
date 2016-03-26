@@ -15,12 +15,16 @@ include_directories(BEFORE ${MY_SOURCE_DIR}includes/)
 # For frameClock includes
 include_directories(BEFORE ${MY_SOURCE_DIR}../common/frameclock/)
 
+# For Collisions
+include_directories(BEFORE ${MY_SOURCE_DIR}../common/collisions/)
+set(COLLISIONS_SRC ../common/collisions/Collision.cpp)
+
 # Output directory
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${dir}/bin")
 
 set(SOURCE_FILES src/main.cpp src/graphicHandler.cpp src/mediaHandler.cpp src/mapEditor.cpp src/tilesetHandler.cpp src/cameraHandler.cpp)
-add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
+add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES} ${COLLISIONS_SRC})
 
 
 # Detect and add SFML

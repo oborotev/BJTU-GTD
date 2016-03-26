@@ -21,7 +21,7 @@ void        MediaHandler::wipeAll()
 const int   MediaHandler::addNewTexture(const std::string &path, const std::string &name)
 {
     this->_textures.emplace_back(std::make_pair(new sf::Texture, name));
-    if (!this->_textures.back().first->loadFromFile(path))
+    if (!Collision::CreateTextureAndBitmask(this->_textures.back().first, path))
     {
         delete this->_textures.back().first;
         std::cout << "Problem while loading the texture" << std::endl;

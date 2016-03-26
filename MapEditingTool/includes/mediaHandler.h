@@ -8,6 +8,7 @@
 # include <string>
 # include <iostream>
 # include <SFML/Graphics.hpp>
+# include "Collision.h"
 
 class MediaHandler
 {

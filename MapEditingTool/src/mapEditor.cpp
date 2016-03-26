@@ -28,8 +28,6 @@ const int       MapEditor::init()
     return 0;
 }
 
-
-
 const int       MapEditor::start()
 {
     if (this->_graphicHandler->init())

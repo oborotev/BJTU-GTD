@@ -12,21 +12,7 @@ endif(WIN32)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(BEFORE ${MY_SOURCE_DIR}includes/)
-# For frameClock includes
-include_directories(BEFORE ${MY_SOURCE_DIR}../GameEngine/frameclock/)
-
-# For Collisions
-include_directories(BEFORE ${MY_SOURCE_DIR}../GameEngine/collisions/)
-set(COLLISIONS_SRC ../GameEngine/collisions/Collision.cpp)
-
-# For Animations
-include_directories(BEFORE ${MY_SOURCE_DIR}../GameEngine/animations/)
-set(ANIMATIONS_SRC ../GameEngine/animations/AnimatedSprite.cpp ../GameEngine/animations/Animation.cpp)
-
-# For KekEngine
-include_directories(BEFORE ${MY_SOURCE_DIR}../GameEngine/KekEngine/includes/)
-set(KEKENGINE_SRC ../GameEngine/KekEngine/src/cameraHandler.cpp ../GameEngine/KekEngine/src/graphicHandler.cpp ../GameEngine/KekEngine/src/entity.cpp ../GameEngine/KekEngine/src/livingEntity.cpp ../GameEngine/KekEngine/src/mediaHandler.cpp ../GameEngine/KekEngine/src/player.cpp ../GameEngine/KekEngine/src/tilesetHandler.cpp)
-
+include(${CMAKE_CURRENT_SOURCE_DIR}/../GameEngine/KekEngine.cmake)
 # Output directory
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${dir}/bin")

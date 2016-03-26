@@ -213,6 +213,7 @@ const int     GraphicHandler::init()
     this->_clock = new sfx::FrameClock();
     this->_clockHUD = new ClockHUD(*this->_clock, this->_mainFont);
     this->_window->setFramerateLimit(60);
+    this->_window->setVerticalSyncEnabled(true);
     this->_mainCamera->init(this->_window->getSize().x, this->_window->getSize().y,sf::FloatRect(0, 0, this->_window->getSize().x, this->_window->getSize().y), this->_cameraDelimited, this->_cameraDelimitation);
     this->_window->setView(*this->_mainCamera->getView());
     return (0);

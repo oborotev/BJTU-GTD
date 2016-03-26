@@ -73,6 +73,8 @@ sf::Shape* MediaHandler::getShape(const std::string &name)
 
 sf::Texture* MediaHandler::getTexture(const std::string &name)
 {
+    if (this->_textures.size() == 0)
+        return (NULL);
     auto it = std::find_if(this->_textures.begin(), this->_textures.end(), [&name](const std::pair<sf::Texture *, const std::string>& obj) {return obj.second == name;});
     if (it != this->_textures.end())
         return (it->first);
@@ -85,6 +87,8 @@ sf::Texture* MediaHandler::getTexture(const std::string &name)
 
 sf::Sprite*  MediaHandler::getSprite(const std::string &name)
 {
+    if (this->_sprites.size() == 0)
+        return (NULL);
     auto it = std::find_if(this->_sprites.begin(), this->_sprites.end(), [&name](const std::pair<sf::Sprite *, const std::string>& obj) {return obj.second == name;});
     if (it != this->_sprites.end())
         return (it->first);

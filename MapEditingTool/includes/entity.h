@@ -6,15 +6,16 @@
 #define MAPEDITINGTOOL_ENTITY_H
 
 # include <string>
+# include <vector>
 
 class Entity
 {
 public:
     Entity(const int &x, const int &y, const int &hp);
     ~Entity() {};
-private:
+protected:
     int     _hp;
-    std::vector<const std::string> _dialogs;
+    std::vector<std::string> _dialogs;
     int     _x;
     int     _y;
 };

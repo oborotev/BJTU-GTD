@@ -153,7 +153,8 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
             this->_mainCamera->arbitraryMove(0, -coef);
             this->_window->setView(*this->_mainCamera->getView());
         }
-        entity->changeDirection(LivingEntity::Direction::UP);
+        if (!_playerMoved)
+            entity->changeDirection(LivingEntity::Direction::UP);
         entity->move(0, -coef);
         moved = true;
     }
@@ -163,7 +164,8 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
             this->_mainCamera->arbitraryMove(0, coef);
             this->_window->setView(*this->_mainCamera->getView());
         }
-        entity->changeDirection(LivingEntity::Direction::DOWN);
+        if (!_playerMoved)
+            entity->changeDirection(LivingEntity::Direction::DOWN);
         entity->move(0, coef);
         moved = true;
     }
@@ -173,7 +175,8 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
             this->_mainCamera->arbitraryMove(-coef, 0);
             this->_window->setView(*this->_mainCamera->getView());
         }
-        entity->changeDirection(LivingEntity::Direction::LEFT);
+        if (!_playerMoved)
+            entity->changeDirection(LivingEntity::Direction::LEFT);
         entity->move(-coef, 0);
         moved = true;
     }
@@ -183,7 +186,8 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
             this->_mainCamera->arbitraryMove(coef, 0);
             this->_window->setView(*this->_mainCamera->getView());
         }
-        entity->changeDirection(LivingEntity::Direction::RIGHT);
+        if (!_playerMoved)
+            entity->changeDirection(LivingEntity::Direction::RIGHT);
         entity->move(coef, 0);
         moved = true;
     }

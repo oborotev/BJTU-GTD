@@ -50,29 +50,11 @@ std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>>   
     return (this->_staticElems);
 }
 
-const int   MediaHandler::addNewSprite(const std::string &textureName)
+const int   MediaHandler::addNewSprite(sf::Texture *texture, const std::string &spriteName)
 {
-    std::cout << _textures.size() << std::endl;
-  /*  for(unsigned int i = 0; i < _textures.size(); i++)
-    {*/
-    std::cout << this->_textures[0].second << std::endl;
-
-    if (this->_textures[0].second == "test")
-            std::cout << "ta" << std::endl;
-   // }
-/*
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-
-    if (!texture.loadFromFile(path))
-    {
-        std::cout << "Problem while loading the texture";
-        return (1);
-    }
-    this->_textures.push_back(std::make_pair(texture, name));
-    //std::cout << this->_textures[0].second << std::endl;
+    this->_sprites.emplace_back(std::make_pair(new sf::Sprite, spriteName));
+    this->_sprites.back().first->setTexture(*texture);
     return (0);
-*/
 }
 
 sf::Shape* MediaHandler::getShape(const std::string &name)
@@ -101,7 +83,14 @@ sf::Texture* MediaHandler::getTexture(const std::string &name)
     }
 }
 
-sf::Sprite  MediaHandler::getSprite(const std::string &name)
+sf::Sprite*  MediaHandler::getSprite(const std::string &name)
 {
-
+    auto it = std::find_if(this->_sprites.begin(), this->_sprites.end(), [&name](const std::pair<sf::Sprite *, const std::string>& obj) {return obj.second == name;});
+    if (it != this->_sprites.end())
+        return (it->first);
+    else
+    {
+        std::cout << "Couldn't find a sprite for " << name << " in the registered sprites" << std::endl;
+        return (NULL);
+    }
 }

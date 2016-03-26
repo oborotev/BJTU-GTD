@@ -19,12 +19,16 @@ const int       MapEditor::init()
     this->_tilesetHandler = this->_graphicHandler->getBaseMap();
     this->_mediaHandler = this->_graphicHandler->getMediaHandler();
     this->_mediaHandler->addNewTexture("../media/textures/tileset.gif", "map_tileset");
+    this->_mediaHandler->addNewTexture("../media/textures/arrow-right.png", "arrow_right");
     this->_mediaHandler->addNewShape(new sf::RectangleShape(sf::Vector2f(240, 768)), "tile_choose_bg", true, sf::Vector2i(804, 0));
     this->_mediaHandler->getShape("tile_choose_bg")->setFillColor(sf::Color(0, 31, 63));
+    this->_mediaHandler->addNewSprite(this->_mediaHandler->getTexture("arrow_right"), "arrow_right");
+    this->_mediaHandler->getSprite("arrow_right")->setPosition(940, 680);
     this->_tilesetHandler->init(this->_mediaHandler->getTexture("map_tileset"), sf::Vector2u(32, 32), "../media/maps/base", 0, 0, tileDefinition.data());
-    this->_graphicHandler->setFpsDebug(true);
     return 0;
 }
+
+
 
 const int       MapEditor::start()
 {
@@ -49,6 +53,7 @@ const int       MapEditor::start()
             this->_graphicHandler->moveCamera(GraphicHandler::Directions::DOWN);
         this->_graphicHandler->drawBaseMap();
         this->_graphicHandler->draw(*this->_mediaHandler->getShape("tile_choose_bg"));
+        this->_graphicHandler->draw(*this->_mediaHandler->getSprite("arrow_right"));
         this->_graphicHandler->loop();
     }
     return 0;

@@ -21,11 +21,11 @@ public:
     MediaHandler() {};
     ~MediaHandler() {};
     const int   addNewTexture(const std::string &path, const std::string &name);
-    const int   addNewSprite(const std::string &textureName);
+    const int   addNewSprite(sf::Texture *texture, const std::string &spriteName);
     const int   addNewShape(sf::Shape *shape, const std::string &shapeName, const bool isGui=false, const sf::Vector2i &position=sf::Vector2i(0, 0));
     sf::Shape   *getShape(const std::string &name);
     sf::Texture *getTexture(const std::string &name);
-    sf::Sprite  getSprite(const std::string &name);
+    sf::Sprite  *getSprite(const std::string &name);
     std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>> &getStaticElems();
     //Clean the vectors
     void        wipeAll();

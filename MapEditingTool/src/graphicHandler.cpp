@@ -95,7 +95,7 @@ bool          GraphicHandler::isKeyDown(const sf::Keyboard::Key &key)
         return (true);
 }
 
-void            GraphicHandler::moveStaticObjects(const sf::Vector2i &vector)
+void            GraphicHandler::moveStaticObjects()
 {
     std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>> staticElems = this->_mediaHandler->getStaticElems();
 
@@ -138,54 +138,59 @@ void             GraphicHandler::moveCamera(const Directions &direction)
     }
     this->_window->setView(*this->_mainCamera->getView());
     if (moved)
-        this->moveStaticObjects(offset);
+        this->moveStaticObjects();
 }
 
-void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera)
+void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera, const bool &isPlayer)
 {
     double       coef = (entity->getSpeed() * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
+    bool         moved = false;
 
     if (direction == LivingEntity::Direction::UP)
     {
         if (moveCamera)
         {
-            this->_mainCamera->getView()->move(0, -coef);
+            this->_mainCamera->arbitraryMove(0, -coef);
             this->_window->setView(*this->_mainCamera->getView());
         }
         entity->changeDirection(LivingEntity::Direction::UP);
         entity->move(0, -coef);
-        _playerMoved = true;
+        moved = true;
     }
     else if (direction == LivingEntity::Direction::DOWN)
     {
         if (moveCamera) {
-            this->_mainCamera->getView()->move(0, coef);
+            this->_mainCamera->arbitraryMove(0, coef);
             this->_window->setView(*this->_mainCamera->getView());
         }
         entity->changeDirection(LivingEntity::Direction::DOWN);
         entity->move(0, coef);
-        _playerMoved = true;
+        moved = true;
     }
     else if (direction == LivingEntity::Direction::LEFT)
     {
         if (moveCamera) {
-            this->_mainCamera->getView()->move(-coef, 0);
+            this->_mainCamera->arbitraryMove(-coef, 0);
             this->_window->setView(*this->_mainCamera->getView());
         }
         entity->changeDirection(LivingEntity::Direction::LEFT);
         entity->move(-coef, 0);
-        _playerMoved = true;
+        moved = true;
     }
     else if (direction == LivingEntity::Direction::RIGHT)
     {
         if (moveCamera) {
-            this->_mainCamera->getView()->move(coef, 0);
+            this->_mainCamera->arbitraryMove(coef, 0);
             this->_window->setView(*this->_mainCamera->getView());
         }
         entity->changeDirection(LivingEntity::Direction::RIGHT);
         entity->move(-coef, 0);
-        _playerMoved = true;
+        moved = true;
     }
+    if (isPlayer)
+        _playerMoved = moved;
+    if (moved)
+        this->moveStaticObjects();
 }
 
 void          GraphicHandler::setFpsDebug(const bool &option)

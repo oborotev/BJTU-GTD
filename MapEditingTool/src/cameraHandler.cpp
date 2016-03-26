@@ -47,6 +47,13 @@ void        CameraHandler::setDelimitation(const sf::IntRect &delimitation)
             delimitation.height != 0 || delimitation.top != 0 || delimitation.left != 0 || delimitation.width != 0;
 }
 
+void        CameraHandler::arbitraryMove(const float &x, const float &y)
+{
+    this->_centerX += x;
+    this->_centerY += y;
+    this->_camera->move(x, y);
+}
+
 void        CameraHandler::updatePositionCenter(const float &x, const float &y)
 {
     this->_camera->setCenter(x, y);

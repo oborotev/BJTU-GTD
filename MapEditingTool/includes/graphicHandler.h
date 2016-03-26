@@ -49,9 +49,9 @@ public:
     void        setFpsDebug(const bool &option);
     //Drawing
     void        draw(const sf::Drawable &drawable) const;
-    void        moveStaticObjects(const sf::Vector2i &vector);
+    void        moveStaticObjects();
     //Entities
-    void        moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera=false);
+    void        moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera=false, const bool &isPlayer=false);
     //Player
     void        initPlayer(const int &x, const int &y, const int &hp, const float &speed=10.0, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
     Player*     getPlayer() const;

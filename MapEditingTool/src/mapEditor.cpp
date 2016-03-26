@@ -59,13 +59,13 @@ const int       MapEditor::start()
             if (this->_graphicHandler->eventTriggered(sf::Event::Closed))
                 this->_graphicHandler->terminate();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::LEFT, true);
+            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::LEFT, true, true);
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::RIGHT, true);
+            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::RIGHT, true, true);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::UP, true);
+            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::UP, true, true);
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::DOWN, true);
+            this->_graphicHandler->moveLivingEntity(this->_graphicHandler->getPlayer(), LivingEntity::Direction::DOWN, true, true);
         this->_graphicHandler->drawBaseMap();
         this->_graphicHandler->getPlayer()->update(this->_graphicHandler->getClock()->getLastFrameTime());
         this->_graphicHandler->draw(*this->_graphicHandler->getPlayer()->getAnimation());

@@ -49,11 +49,11 @@ public:
     void        setFpsDebug(const bool &option);
     //Drawing
     void        draw(const sf::Drawable &drawable) const;
-    void        moveStaticObjects();
+    void        moveStaticObjects(const bool mode=false);
     //Entities
     void        moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera=false, const bool &isPlayer=false);
     //Player
-    void        initPlayer(const int &x, const int &y, const int &hp, const float &speed=10.0, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL);
+    void        initPlayer(const int &x, const int &y, const int &hp, const float &speed=10.0, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL, const bool focusCamera=true);
     Player*     getPlayer() const;
     //CLock
     sfx::FrameClock* getClock() const;

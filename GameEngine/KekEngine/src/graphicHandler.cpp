@@ -71,7 +71,7 @@ void     GraphicHandler::loop()
         this->_window->close();
         return;
     }
-    if (this->_fpsDebug)
+    if (_fpsDebug)
         this->_window->draw(*this->_clockHUD);
     if (!_playerMoved && _player)
         this->_player->changeDirection(LivingEntity::Direction::STILL);
@@ -95,7 +95,7 @@ bool          GraphicHandler::isKeyDown(const sf::Keyboard::Key &key)
         return (true);
 }
 
-void            GraphicHandler::moveStaticObjects()
+void            GraphicHandler::moveStaticObjects(const bool mode)
 {
     std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>> staticElems = this->_mediaHandler->getStaticElems();
 
@@ -106,7 +106,10 @@ void            GraphicHandler::moveStaticObjects()
                 (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) +
                 it->second.offsets.y);
     }
-    this->_clockHUD->setPosXY((this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + 800, (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) + 600);
+    if (!mode)
+        this->_clockHUD->setPosXY((this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + 800, (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) + 600);
+    else
+        this->_clockHUD->setPosXY(this->_mainCamera->getCenterX(), this->_mainCamera->getCenterY());
 }
 
 void             GraphicHandler::moveCamera(const Directions &direction)
@@ -194,7 +197,7 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
     if (isPlayer)
         _playerMoved = moved;
     if (moved)
-        this->moveStaticObjects();
+        this->moveStaticObjects(true);
 }
 
 void          GraphicHandler::setFpsDebug(const bool &option)
@@ -219,6 +222,11 @@ const int     GraphicHandler::init()
     this->_window->setFramerateLimit(60);
     this->_window->setVerticalSyncEnabled(true);
     this->_mainCamera->init(this->_window->getSize().x, this->_window->getSize().y,sf::FloatRect(0, 0, this->_window->getSize().x, this->_window->getSize().y), this->_cameraDelimited, this->_cameraDelimitation);
+    if (this->_player)
+    {
+        this->_mainCamera->updatePositionCenter(this->_player->getX(), this->_player->getY());
+        this->_clockHUD->setPosXY(this->_mainCamera->getCenterX(), this->_mainCamera->getCenterY());
+    }
     this->_window->setView(*this->_mainCamera->getView());
     return (0);
 }
@@ -266,7 +274,7 @@ void    GraphicHandler::cameraOnEntity(Entity *entity)
     this->_cameraOnEntity = entity;
 }
 
-void    GraphicHandler::initPlayer(const int &x, const int &y, const int &hp, const float &speed, const bool animated, const sf::Time &animationSpeed, sf::Texture *spriteSheet)
+void    GraphicHandler::initPlayer(const int &x, const int &y, const int &hp, const float &speed, const bool animated, const sf::Time &animationSpeed, sf::Texture *spriteSheet, const bool focusCamera)
 {
     this->_player = new Player(x, y, hp, speed, animated, animationSpeed, spriteSheet);
 }

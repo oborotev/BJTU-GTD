@@ -25,6 +25,8 @@ GraphicHandler::GraphicHandler(const std::string &title, const std::string &main
     this->_resizable = resizable;
     this->_keyStates.fill(false);
     this->_cameraOnEntity = NULL;
+    this->_playerMoved = false;
+    this->_calledToMove = false;
 }
 
 GraphicHandler::~GraphicHandler() {
@@ -64,6 +66,32 @@ void     GraphicHandler::draw(const sf::Drawable &drawable) const
         this->_window->draw(drawable);
 }
 
+const int     GraphicHandler::init()
+{
+    if (_resizable)
+        this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
+    if (!_resizable)
+        this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title, sf::Style::Close);
+    if (this->_mainFontPath != "")
+    if (!this->_mainFont.loadFromFile(this->_mainFontPath))
+    {
+        std::cout << "Couldn't load font from path " << this->_mainFontPath << std::endl;
+        return (1);
+    }
+    this->_clock = new sfx::FrameClock();
+    this->_clockHUD = new ClockHUD(*this->_clock, this->_mainFont);
+    this->_window->setFramerateLimit(60);
+    this->_window->setVerticalSyncEnabled(true);
+    this->_mainCamera->init(this->_window->getSize().x, this->_window->getSize().y,sf::FloatRect(0, 0, this->_window->getSize().x, this->_window->getSize().y), this->_cameraDelimited, this->_cameraDelimitation);
+    if (this->_player)
+    {
+        this->_mainCamera->updatePositionCenter(this->_player->getX(), this->_player->getY());
+        this->_clockHUD->setPosXY(this->_mainCamera->getCenterX(), this->_mainCamera->getCenterY());
+    }
+    this->_window->setView(*this->_mainCamera->getView());
+    return (0);
+}
+
 void     GraphicHandler::loop()
 {
     if (!this->_isAlive)
@@ -76,6 +104,7 @@ void     GraphicHandler::loop()
     if (!_playerMoved && _player)
         this->_player->changeDirection(LivingEntity::Direction::STILL);
     _playerMoved = false;
+    _calledToMove = false;
     this->_window->setView(*this->_mainCamera->getView());
     this->_window->display();
     this->_window->clear(sf::Color::Black);
@@ -95,140 +124,9 @@ bool          GraphicHandler::isKeyDown(const sf::Keyboard::Key &key)
         return (true);
 }
 
-void            GraphicHandler::moveStaticObjects(const bool mode)
-{
-    std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>> staticElems = this->_mediaHandler->getStaticElems();
-
-    for (std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>>::iterator it = staticElems.begin(); it < staticElems.end(); it++)
-    {
-        it->first->setPosition(
-                (this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + it->second.offsets.x,
-                (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) +
-                it->second.offsets.y);
-    }
-    if (!mode)
-        this->_clockHUD->setPosXY((this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + 800, (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) + 600);
-    else
-        this->_clockHUD->setPosXY(this->_mainCamera->getCenterX(), this->_mainCamera->getCenterY());
-}
-
-void             GraphicHandler::moveCamera(const Directions &direction)
-{
-    double       coef = (this->_cameraSpeed * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
-
-    sf::Vector2i offset(0, 0);
-    bool moved = false;
-
-    if (direction == Directions::UP)
-    {
-        offset = this->_mainCamera->move(0.0, -coef, true);
-        moved = true;
-    }
-    else if (direction == Directions::DOWN)
-    {
-        offset = this->_mainCamera->move(0.0, coef, true);
-        moved = true;
-    }
-    else if (direction == Directions::LEFT)
-    {
-        offset = this->_mainCamera->move(-coef, 0.0, true);
-        moved = true;
-    }
-    else if (direction == Directions::RIGHT)
-    {
-        offset = this->_mainCamera->move(coef, 0.0, true);
-        moved = true;
-    }
-    this->_window->setView(*this->_mainCamera->getView());
-    if (moved)
-        this->moveStaticObjects();
-}
-
-void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera, const bool &isPlayer)
-{
-    double       coef = (entity->getSpeed() * 0.1) * this->_clock->getLastFrameTime().asMilliseconds();
-    bool         moved = false;
-
-    if (direction == LivingEntity::Direction::UP)
-    {
-        if (moveCamera)
-        {
-            this->_mainCamera->arbitraryMove(0, -coef);
-            this->_window->setView(*this->_mainCamera->getView());
-        }
-        if (!_playerMoved)
-            entity->changeDirection(LivingEntity::Direction::UP);
-        entity->move(0, -coef);
-        moved = true;
-    }
-    else if (direction == LivingEntity::Direction::DOWN)
-    {
-        if (moveCamera) {
-            this->_mainCamera->arbitraryMove(0, coef);
-            this->_window->setView(*this->_mainCamera->getView());
-        }
-        if (!_playerMoved)
-            entity->changeDirection(LivingEntity::Direction::DOWN);
-        entity->move(0, coef);
-        moved = true;
-    }
-    else if (direction == LivingEntity::Direction::LEFT)
-    {
-        if (moveCamera) {
-            this->_mainCamera->arbitraryMove(-coef, 0);
-            this->_window->setView(*this->_mainCamera->getView());
-        }
-        if (!_playerMoved)
-            entity->changeDirection(LivingEntity::Direction::LEFT);
-        entity->move(-coef, 0);
-        moved = true;
-    }
-    else if (direction == LivingEntity::Direction::RIGHT)
-    {
-        if (moveCamera) {
-            this->_mainCamera->arbitraryMove(coef, 0);
-            this->_window->setView(*this->_mainCamera->getView());
-        }
-        if (!_playerMoved)
-            entity->changeDirection(LivingEntity::Direction::RIGHT);
-        entity->move(coef, 0);
-        moved = true;
-    }
-    if (isPlayer)
-        _playerMoved = moved;
-    if (moved)
-        this->moveStaticObjects(true);
-}
-
 void          GraphicHandler::setFpsDebug(const bool &option)
 {
     this->_fpsDebug = option;
-}
-
-const int     GraphicHandler::init()
-{
-    if (_resizable)
-        this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
-    if (!_resizable)
-        this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title, sf::Style::Close);
-    if (this->_mainFontPath != "")
-        if (!this->_mainFont.loadFromFile(this->_mainFontPath))
-        {
-            std::cout << "Couldn't load font from path " << this->_mainFontPath << std::endl;
-            return (1);
-        }
-    this->_clock = new sfx::FrameClock();
-    this->_clockHUD = new ClockHUD(*this->_clock, this->_mainFont);
-    this->_window->setFramerateLimit(60);
-    this->_window->setVerticalSyncEnabled(true);
-    this->_mainCamera->init(this->_window->getSize().x, this->_window->getSize().y,sf::FloatRect(0, 0, this->_window->getSize().x, this->_window->getSize().y), this->_cameraDelimited, this->_cameraDelimitation);
-    if (this->_player)
-    {
-        this->_mainCamera->updatePositionCenter(this->_player->getX(), this->_player->getY());
-        this->_clockHUD->setPosXY(this->_mainCamera->getCenterX(), this->_mainCamera->getCenterY());
-    }
-    this->_window->setView(*this->_mainCamera->getView());
-    return (0);
 }
 
 void    GraphicHandler::launch()
@@ -267,11 +165,6 @@ const bool      GraphicHandler::eventTriggered(const sf::Event::EventType& event
 const bool      GraphicHandler::getIsAlive()
 {
     return this->_isAlive;
-}
-
-void    GraphicHandler::cameraOnEntity(Entity *entity)
-{
-    this->_cameraOnEntity = entity;
 }
 
 void    GraphicHandler::initPlayer(const int &x, const int &y, const int &hp, const float &speed, const bool animated, const sf::Time &animationSpeed, sf::Texture *spriteSheet, const bool focusCamera)

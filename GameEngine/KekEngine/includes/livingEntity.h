@@ -27,6 +27,9 @@ public:
     void    addFrameState(const LivingEntity::Direction &direction, const sf::IntRect &rect);
     void    changeDirection(const LivingEntity::Direction &direction);
     void    move(const float &x, const float &y);
+    void    setPosition(const double &x, const double &y);
+    virtual void    setY(const double &y);
+    virtual void    setX(const double &x);
     void    update(const sf::Time &time);
     const float &getSpeed() const;
     AnimatedSprite* getAnimation() const;

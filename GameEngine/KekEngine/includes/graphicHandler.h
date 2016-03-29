@@ -72,6 +72,7 @@ private:
     bool         _fixedSize;
     //Event object
     sf::Event    _event;
+    bool         _calledToMove;
     //Event settings
     std::array<bool, sf::Keyboard::Key::KeyCount> _keyStates;
     //Cameras

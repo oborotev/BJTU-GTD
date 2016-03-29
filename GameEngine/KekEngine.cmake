@@ -11,4 +11,4 @@ set(ANIMATIONS_SRC ../GameEngine/animations/AnimatedSprite.cpp ../GameEngine/ani
 
 # For KekEngine
 include_directories(BEFORE ${MY_SOURCE_DIR}../GameEngine/KekEngine/includes/)
-set(KEKENGINE_SRC ../GameEngine/KekEngine/src/cameraHandler.cpp ../GameEngine/KekEngine/src/graphicHandler.cpp ../GameEngine/KekEngine/src/entity.cpp ../GameEngine/KekEngine/src/livingEntity.cpp ../GameEngine/KekEngine/src/mediaHandler.cpp ../GameEngine/KekEngine/src/player.cpp ../GameEngine/KekEngine/src/tilesetHandler.cpp)
+set(KEKENGINE_SRC ../GameEngine/KekEngine/src/cameraHandler.cpp ../GameEngine/KekEngine/src/graphicHandler.cpp ../GameEngine/KekEngine/src/entity.cpp ../GameEngine/KekEngine/src/livingEntity.cpp ../GameEngine/KekEngine/src/mediaHandler.cpp ../GameEngine/KekEngine/src/player.cpp ../GameEngine/KekEngine/src/tilesetHandler.cpp ../GameEngine/KekEngine/src/movementsCamera.cpp ../GameEngine/KekEngine/src/movementsEntities.cpp)

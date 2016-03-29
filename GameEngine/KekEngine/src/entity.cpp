@@ -19,3 +19,13 @@ const int &Entity::getY()
 {
     return (this->_y);
 }
+
+void    Entity::setY(const double &y)
+{
+    this->_y = y;
+}
+
+void    Entity::setX(const double &x)
+{
+    this->_x = x;
+}

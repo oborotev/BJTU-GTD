@@ -15,6 +15,8 @@ public:
     ~Entity() {};
     const int &getX();
     const int &getY();
+    void    setY(const double &y);
+    void    setX(const double &x);
 protected:
     std::vector<std::string> _dialogs;
     int     _x;

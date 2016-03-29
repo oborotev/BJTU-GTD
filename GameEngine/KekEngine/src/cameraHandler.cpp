@@ -56,6 +56,8 @@ void        CameraHandler::arbitraryMove(const float &x, const float &y)
 
 void        CameraHandler::updatePositionCenter(const float &x, const float &y)
 {
+    this->_centerX = x;
+    this->_centerY = y;
     this->_camera->setCenter(x, y);
 }
 

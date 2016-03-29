@@ -27,13 +27,21 @@
 AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
         m_animation(NULL), m_frameTime(frameTime), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL)
 {
+    this->m_spriteFrame = NULL;
+}
 
+AnimatedSprite::~AnimatedSprite()
+{
+    if (m_spriteFrame)
+        delete this->m_spriteFrame;
 }
 
 void AnimatedSprite::setAnimation(const Animation& animation)
 {
     m_animation = &animation;
     m_texture = m_animation->getSpriteSheet();
+    this->m_spriteFrame = new sf::Sprite();
+    this->m_spriteFrame->setTexture(*m_texture);
     m_currentFrame = 0;
     setFrame(m_currentFrame);
 }
@@ -137,10 +145,16 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime)
         m_vertices[1].texCoords = sf::Vector2f(left, bottom);
         m_vertices[2].texCoords = sf::Vector2f(right, bottom);
         m_vertices[3].texCoords = sf::Vector2f(right, top);
+        this->m_spriteFrame->setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
     }
 
     if (resetTime)
         m_currentTime = sf::Time::Zero;
+}
+
+sf::Sprite* AnimatedSprite::getSpriteFrame() const
+{
+    return this->m_spriteFrame;
 }
 
 void AnimatedSprite::update(sf::Time deltaTime)

@@ -29,6 +29,7 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 #include "Animation.hpp"
 
@@ -36,6 +37,7 @@ class AnimatedSprite : public sf::Drawable, public sf::Transformable
 {
 public:
     explicit AnimatedSprite(sf::Time frameTime = sf::seconds(0.2f), bool paused = false, bool looped = true);
+    ~AnimatedSprite();
 
     void update(sf::Time deltaTime);
     void setAnimation(const Animation& animation);
@@ -53,6 +55,7 @@ public:
     bool isPlaying() const;
     sf::Time getFrameTime() const;
     void setFrame(std::size_t newFrame, bool resetTime = true);
+    sf::Sprite* getSpriteFrame() const;
 
 private:
     const Animation* m_animation;
@@ -62,6 +65,7 @@ private:
     bool m_isPaused;
     bool m_isLooped;
     const sf::Texture* m_texture;
+    sf::Sprite* m_spriteFrame;
     sf::Vertex m_vertices[4];
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

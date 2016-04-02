@@ -29,3 +29,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../common/cmake_modules" ${CMAKE_MODU
 find_package(SFML 2 REQUIRED system window graphics network audio)
 target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
 
+#BOX2D
+find_package(Box2D)
+target_link_libraries(${EXECUTABLE_NAME} ${BOX2D_LIBRARIES})

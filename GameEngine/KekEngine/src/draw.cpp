@@ -14,7 +14,7 @@ void GraphicHandler::drawPolygonFromFixtures(b2Fixture* fixtures)
         for (int i=0; i < polygonShape->GetVertexCount(); i++)
         {
             b2Vec2 vertex = polygonShape->GetVertex(i);
-            polygon.setPoint(i, sf::Vector2f(vertex.x*RATIO, vertex.y*RATIO));
+            polygon.setPoint(i, sf::Vector2f(vertex.x, vertex.y));
         }
         polygon.setOutlineThickness(1.0f);
         polygon.setFillColor(sf::Color::White);

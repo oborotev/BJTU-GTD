@@ -10,8 +10,6 @@
 # include <map>
 # include <string>
 
-# define RATIO 30.0f
-
 class PhysicsHandler
 {
 public:

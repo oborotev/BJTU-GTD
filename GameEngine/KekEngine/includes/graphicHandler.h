@@ -30,7 +30,7 @@ public:
 public:
     GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, const bool resizable=false, const bool cameraDelimited=false, const sf::IntRect &cameraDelimitation=sf::IntRect(0, 0, 0, 0), unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false, const float cameraSpeed=10.0);
     ~GraphicHandler();
-    const int   init(const bool isPhysics=true, const sf::Vector2f &gravity=sf::Vector2f(0.f, 9.8f));
+    const int   init(const bool isPhysics=true, const sf::Vector2f &gravity=sf::Vector2f(0.f, 0.f));
     void        loop();
     void        launch();
     void        terminate();
@@ -58,6 +58,7 @@ public:
     Player*     getPlayer() const;
     //Physics
     PhysicsHandler     *getPhysicsHandler() const;
+    void        moveLivingEntityBody(LivingEntity *entity, const LivingEntity::Direction &direction, b2Body* constraint, const bool &moveCamera=false, const bool &isPlayer=false);
     //Drawing
     void        drawPolygonFromFixtures(b2Fixture* fixtures);
     //CLock

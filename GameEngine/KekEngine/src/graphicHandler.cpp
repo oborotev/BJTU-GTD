@@ -40,12 +40,12 @@ GraphicHandler::~GraphicHandler() {
         delete this->_player;
 }
 
-TilesetHandler*     GraphicHandler::getBaseMap()
+TilesetHandler*     GraphicHandler::getBaseMap() const
 {
     return (this->_baseMap);
 }
 
-MediaHandler*       GraphicHandler::getMediaHandler()
+MediaHandler*       GraphicHandler::getMediaHandler() const
 {
     return (this->_mediaHandler);
 }
@@ -66,7 +66,7 @@ void     GraphicHandler::draw(const sf::Drawable &drawable) const
         this->_window->draw(drawable);
 }
 
-const int     GraphicHandler::init()
+const int     GraphicHandler::init(const bool isPhysics, const sf::Vector2f &gravity)
 {
     if (_resizable)
         this->_window = new sf::RenderWindow(sf::VideoMode(this->_modeWidth, this->_modeHeight, this->_modeBitsPerPixel), this->_title);
@@ -86,7 +86,17 @@ const int     GraphicHandler::init()
     if (this->_player)
     {
         this->_mainCamera->updatePositionCenter(this->_player->getX(), this->_player->getY());
-        this->_clockHUD->setPosXY(this->_mainCamera->getCenterX(), this->_mainCamera->getCenterY());
+        this->_clockHUD->setPosXY((this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + 800, (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) + 600);
+    }
+    this->_isPhysics = isPhysics;
+    if (this->_isPhysics)
+    {
+        this->_physics = new PhysicsHandler();
+        if (!this->_physics->init(gravity))
+        {
+            std::cout << "Couldn't initialize the physics engine" << std::endl;
+            return (1);
+        }
     }
     this->_window->setView(*this->_mainCamera->getView());
     return (0);
@@ -138,6 +148,11 @@ void    GraphicHandler::launch()
 void    GraphicHandler::terminate()
 {
     this->_mediaHandler->wipeAll();
+    if (this->_isPhysics)
+    {
+        this->_physics->terminate();
+        delete this->_physics;
+    }
     this->_isAlive = false;
 }
 
@@ -180,4 +195,9 @@ sfx::FrameClock* GraphicHandler::getClock() const
 Player* GraphicHandler::getPlayer() const
 {
     return (this->_player);
+}
+
+PhysicsHandler* GraphicHandler::getPhysicsHandler() const
+{
+    return (this->_physics);
 }

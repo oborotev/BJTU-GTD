@@ -32,13 +32,13 @@ void    LivingEntity::addFrameState(const LivingEntity::Direction &direction, co
     }
 }
 
-void    LivingEntity::setY(const double &y)
+void    LivingEntity::setY(const float &y)
 {
     this->_y = y;
     this->_animation->setPosition(this->_x, y);
 }
 
-void    LivingEntity::setX(const double &x)
+void    LivingEntity::setX(const float &x)
 {
     this->_x = x;
     this->_animation->setPosition(x, this->_y);

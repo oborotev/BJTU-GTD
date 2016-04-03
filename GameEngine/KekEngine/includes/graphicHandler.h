@@ -15,6 +15,7 @@
 # include "clockHUD.h"
 # include "cameraHandler.h"
 # include "player.h"
+# include "physics.h"
 
 class GraphicHandler
 {
@@ -29,14 +30,14 @@ public:
 public:
     GraphicHandler(const std::string &title, const std::string &mainFontPath, unsigned int modeWidth = 1024, unsigned int modeHeight = 768, const bool resizable=false, const bool cameraDelimited=false, const sf::IntRect &cameraDelimitation=sf::IntRect(0, 0, 0, 0), unsigned int modeBitsPerPixel=0, const bool fixedSize = true, const bool fpsDebug = false, const float cameraSpeed=10.0);
     ~GraphicHandler();
-    const int   init();
+    const int   init(const bool isPhysics=true, const sf::Vector2f &gravity=sf::Vector2f(0.f, 9.8f));
     void        loop();
     void        launch();
     void        terminate();
     void        drawBaseMap() const;
     const bool  getIsAlive();
-    TilesetHandler* getBaseMap();
-    MediaHandler*   getMediaHandler();
+    TilesetHandler* getBaseMap() const;
+    MediaHandler*   getMediaHandler() const;
     //Events
     const bool  pollEvent();
     const bool  eventTriggered(const sf::Event::EventType& eventType);
@@ -55,6 +56,10 @@ public:
     //Player
     void        initPlayer(const int &x, const int &y, const int &hp, const float &speed=10.0, const bool animated=false, const sf::Time &animationSpeed=sf::Time::Zero, sf::Texture *spriteSheet=NULL, const bool focusCamera=true);
     Player*     getPlayer() const;
+    //Physics
+    PhysicsHandler     *getPhysicsHandler() const;
+    //Drawing
+    void        drawPolygonFromFixtures(b2Fixture* fixtures);
     //CLock
     sfx::FrameClock* getClock() const;
     //Mutex
@@ -95,6 +100,9 @@ private:
     //Player
     Player*         _player;
     bool            _playerMoved;
+    //Physics
+    bool            _isPhysics;
+    PhysicsHandler*  _physics;
     //Fonts
     std::string      _mainFontPath;
     sf::Font         _mainFont;

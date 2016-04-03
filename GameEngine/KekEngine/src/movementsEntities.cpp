@@ -11,10 +11,10 @@ void            GraphicHandler::moveStaticObjects(const bool mode)
                 (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) +
                 it->second.offsets.y);
     }
-    if (!mode)
-        this->_clockHUD->setPosXY((this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + 800, (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) + 600);
-    else
-        this->_clockHUD->setPosXY(this->_mainCamera->getCenterX(), this->_mainCamera->getCenterY());
+    //if (!mode)
+    this->_clockHUD->setPosXY((this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + 800, (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) + 600);
+    //else
+        //this->_clockHUD->setPosXY(this->_mainCamera->getCenterX(), this->_mainCamera->getCenterY());
 }
 
 void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingEntity::Direction &direction, const bool &moveCamera, const bool &isPlayer)
@@ -28,10 +28,7 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
         !this->_baseMap->checkCollision(entity->getAnimation()->getSpriteFrame(), sf::Vector2<double>(entityX, entityY), coef, LivingEntity::Direction::UP, entity, this->_mainCamera))
     {
         if (moveCamera)
-        {
             this->_mainCamera->arbitraryMove(0, -coef);
-            this->_window->setView(*this->_mainCamera->getView());
-        }
         if (!_playerMoved)
             entity->changeDirection(LivingEntity::Direction::UP);
         entity->move(0, -coef);
@@ -40,10 +37,8 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
     else if (direction == LivingEntity::Direction::DOWN &&
              !this->_baseMap->checkCollision(entity->getAnimation()->getSpriteFrame(), sf::Vector2<double>(entityX, entityY), coef, LivingEntity::Direction::DOWN, entity, this->_mainCamera))
     {
-        if (moveCamera) {
+        if (moveCamera)
             this->_mainCamera->arbitraryMove(0, coef);
-            this->_window->setView(*this->_mainCamera->getView());
-        }
         if (!_playerMoved)
             entity->changeDirection(LivingEntity::Direction::DOWN);
         entity->move(0, coef);
@@ -52,10 +47,8 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
     else if (direction == LivingEntity::Direction::LEFT &&
              !this->_baseMap->checkCollision(entity->getAnimation()->getSpriteFrame(), sf::Vector2<double>(entityX, entityY), coef, LivingEntity::Direction::LEFT, entity, this->_mainCamera))
     {
-        if (moveCamera) {
+        if (moveCamera)
             this->_mainCamera->arbitraryMove(-coef, 0);
-            this->_window->setView(*this->_mainCamera->getView());
-        }
         if (!_playerMoved)
             entity->changeDirection(LivingEntity::Direction::LEFT);
         entity->move(-coef, 0);
@@ -64,17 +57,19 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
     else if (direction == LivingEntity::Direction::RIGHT &&
              !this->_baseMap->checkCollision(entity->getAnimation()->getSpriteFrame(), sf::Vector2<double>(entityX, entityY), coef, LivingEntity::Direction::RIGHT, entity, this->_mainCamera))
     {
-        if (moveCamera) {
+        if (moveCamera)
             this->_mainCamera->arbitraryMove(coef, 0);
-            this->_window->setView(*this->_mainCamera->getView());
-        }
         if (!_playerMoved)
             entity->changeDirection(LivingEntity::Direction::RIGHT);
         entity->move(coef, 0);
         moved = true;
     }
     if (direction == LivingEntity::Direction::RIGHT || direction == LivingEntity::Direction::LEFT || direction == LivingEntity::Direction::UP || direction == LivingEntity::Direction::DOWN)
+    {
         _calledToMove = true;
+        this->_window->setView(*this->_mainCamera->getView());
+        this->moveStaticObjects(true);
+    }
     if (isPlayer)
     {
         if (_calledToMove && _playerMoved)
@@ -82,6 +77,4 @@ void        GraphicHandler::moveLivingEntity(LivingEntity *entity, const LivingE
         else
             _playerMoved = moved;
     }
-    if (moved)
-        this->moveStaticObjects(true);
 }

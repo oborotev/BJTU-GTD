@@ -11,6 +11,7 @@ void GraphicHandler::drawPolygonFromFixtures(b2Fixture* fixtures)
         sf::ConvexShape polygon;
         polygon.setPointCount(4);
         b2PolygonShape* polygonShape = (b2PolygonShape*)f->GetShape();
+        //f->Is
         for (int i=0; i < polygonShape->GetVertexCount(); i++)
         {
             b2Vec2 vertex = polygonShape->GetVertex(i);

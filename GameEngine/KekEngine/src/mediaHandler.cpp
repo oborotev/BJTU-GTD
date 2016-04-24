@@ -17,8 +17,25 @@ void        MediaHandler::wipeAll()
     this->_sprites.clear();
     for (std::vector<std::pair<sf::Shape *, const std::string>>::iterator it = this->_shapes.begin(); it != this->_shapes.end(); ++it)
         delete it->first;
+    for (std::vector<std::pair<sf::Sound *, const std::string>>::iterator it = this->_sounds.begin(); it != this->_sounds.end(); ++it)
+        delete it->first;
+    for (std::vector<std::pair<sf::SoundBuffer *, const std::string>>::iterator it = this->_soundBuffers.begin(); it != this->_soundBuffers.end(); ++it)
+        delete it->first;
     this->_shapes.clear();
     this->_staticElems.clear();
+}
+
+const int   MediaHandler::addNewSound(const std::string &path, const std::string &name)
+{
+    this->_soundBuffers.emplace_back(std::make_pair(new sf::SoundBuffer, name));
+    if (!this->_soundBuffers.back().first->loadFromFile(path))
+    {
+        std::cout << "Problem while loading the sound" << std::endl;
+        return (1);
+    }
+    this->_sounds.emplace_back(std::make_pair(new sf::Sound, name));
+    this->_sounds.back().first->setBuffer(*this->_soundBuffers.back().first);
+    return (0);
 }
 
 const int   MediaHandler::addNewTexture(const std::string &path, const std::string &name)
@@ -65,10 +82,12 @@ std::vector<std::pair<sf::Transformable *, MediaHandler::t_staticParameters>>   
     return (this->_staticElems);
 }
 
-const int   MediaHandler::addNewSprite(sf::Texture *texture, const std::string &spriteName, const bool isGui, const sf::Vector2i &position)
+const int   MediaHandler::addNewSprite(sf::Texture *texture, const std::string &spriteName,  const sf::IntRect &textureRect, const bool isGui, const sf::Vector2i &position)
 {
     this->_sprites.emplace_back(std::make_pair(new sf::Sprite, spriteName));
     this->_sprites.back().first->setTexture(*texture);
+    if (textureRect.height != 0 && textureRect.width != 0)
+        this->_sprites.back().first->setTextureRect(textureRect);
     if (isGui)
     {
         MediaHandler::t_staticParameters staticParams;
@@ -119,6 +138,20 @@ sf::Font* MediaHandler::getFont(const std::string &name)
     else
     {
         std::cout << "Couldn't find a font for " << name << " in the registered fonts" << std::endl;
+        return (NULL);
+    }
+}
+
+sf::Sound* MediaHandler::getSound(const std::string &name)
+{
+    if (this->_sounds.size() == 0)
+        return (NULL);
+    auto it = std::find_if(this->_sounds.begin(), this->_sounds.end(), [&name](const std::pair<sf::Sound *, const std::string>& obj) {return obj.second == name;});
+    if (it != this->_sounds.end())
+        return (it->first);
+    else
+    {
+        std::cout << "Couldn't find a sound for " << name << " in the registered sounds" << std::endl;
         return (NULL);
     }
 }

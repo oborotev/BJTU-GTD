@@ -36,6 +36,9 @@ GraphicHandler::~GraphicHandler() {
     delete this->_clock;
     delete this->_clockHUD;
     delete this->_mainCamera;
+    delete this->_speechSoundHandler;
+    if (this->_boxAnimationsHandler)
+        delete this->_boxAnimationsHandler;
     if (this->_player)
         delete this->_player;
 }
@@ -53,6 +56,11 @@ MediaHandler*       GraphicHandler::getMediaHandler() const
 CameraHandler*      GraphicHandler::getCamera()
 {
     return (this->_mainCamera);
+}
+
+BoxAnimations* GraphicHandler::getBoxAnimationsHandler() const
+{
+    return (this->_boxAnimationsHandler);
 }
 
 void     GraphicHandler::drawBaseMap() const
@@ -89,15 +97,16 @@ const int     GraphicHandler::init(const bool isPhysics, const sf::Vector2f &gra
         this->_clockHUD->setPosXY((this->_mainCamera->getCenterX() - (this->_modeWidth / 2)) + 800, (this->_mainCamera->getCenterY() - (this->_modeHeight / 2)) + 600);
     }
     this->_isPhysics = isPhysics;
-    if (this->_isPhysics)
-    {
+    if (this->_isPhysics) {
         this->_physics = new PhysicsHandler();
-        if (!this->_physics->init(gravity))
-        {
+        if (!this->_physics->init(gravity)) {
             std::cout << "Couldn't initialize the physics engine" << std::endl;
             return (1);
         }
     }
+    this->_boxAnimationsHandler = new BoxAnimations(this->_clock);
+    this->_boxAnimationsHandler->init();
+    this->_speechSoundHandler = new SpeechSound(this->_clock);
     this->_window->setView(*this->_mainCamera->getView());
     return (0);
 }
@@ -109,6 +118,7 @@ void     GraphicHandler::loop()
         this->_window->close();
         return;
     }
+    this->_boxAnimationsHandler->animationsHandler();
     if (_fpsDebug)
         this->_window->draw(*this->_clockHUD);
     if (!_playerMoved && _player)
@@ -153,6 +163,7 @@ void    GraphicHandler::terminate()
         this->_physics->terminate();
         delete this->_physics;
     }
+    this->_boxAnimationsHandler->terminate();
     this->_isAlive = false;
 }
 
@@ -168,11 +179,15 @@ const bool      GraphicHandler::pollEvent()
 }
 
 
-const bool      GraphicHandler::eventTriggered(const sf::Event::EventType& eventType)
+const bool      GraphicHandler::eventTriggered(const sf::Event::EventType& eventType, const sf::Keyboard::Key& code)
 {
     if (this->_event.type == sf::Event::KeyReleased && this->_event.key.code == sf::Keyboard::F9)
         this->_fpsDebug = !this->_fpsDebug;
-    if (this->_event.type == eventType)
+    if (code == sf::Keyboard::KeyCount) {
+        if (this->_event.type == eventType)
+            return (true);
+    }
+    else if (this->_event.type == eventType && this->_event.key.code == code)
         return (true);
     return (false);
 }
@@ -200,4 +215,9 @@ Player* GraphicHandler::getPlayer() const
 PhysicsHandler* GraphicHandler::getPhysicsHandler() const
 {
     return (this->_physics);
+}
+
+SpeechSound*    GraphicHandler::getSpeechSoundHandler() const
+{
+    return (this->_speechSoundHandler);
 }

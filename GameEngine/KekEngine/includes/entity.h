@@ -17,6 +17,8 @@ public:
     const int &getY();
     void    setY(const double &y);
     void    setX(const double &x);
+    void    addDialog(const std::string &dialog);
+    void    cleanDialogs();
 protected:
     std::vector<std::string> _dialogs;
     int     _x;

@@ -16,6 +16,8 @@
 # include "cameraHandler.h"
 # include "player.h"
 # include "physics.h"
+# include "boxAnimations.h"
+# include "speechSound.h"
 
 class GraphicHandler
 {
@@ -40,7 +42,7 @@ public:
     MediaHandler*   getMediaHandler() const;
     //Events
     const bool  pollEvent();
-    const bool  eventTriggered(const sf::Event::EventType& eventType);
+    const bool  eventTriggered(const sf::Event::EventType& eventType, const sf::Keyboard::Key& code=sf::Keyboard::KeyCount);
     bool        isKeyDown(const sf::Keyboard::Key &key);
     //Camera
     CameraHandler*  getCamera();
@@ -58,7 +60,11 @@ public:
     Player*     getPlayer() const;
     //Physics
     PhysicsHandler     *getPhysicsHandler() const;
-    void        moveLivingEntityBody(LivingEntity *entity, const LivingEntity::Direction &direction, b2Body* constraint, const bool &moveCamera=false, const bool &isPlayer=false);
+    void        moveLivingEntityBody(LivingEntity *entity, const LivingEntity::Direction &direction, b2Body* constraint=NULL, const bool &moveCamera=false, const bool &isPlayer=false);
+    //BoxAnimations
+    BoxAnimations* getBoxAnimationsHandler() const;
+    //SpeechSound
+    SpeechSound*    getSpeechSoundHandler() const;
     //Drawing
     void        drawPolygonFromFixtures(b2Fixture* fixtures);
     //CLock
@@ -104,6 +110,10 @@ private:
     //Physics
     bool            _isPhysics;
     PhysicsHandler*  _physics;
+    //BoxAnimations
+    BoxAnimations*   _boxAnimationsHandler;
+    //Speech Sound
+    SpeechSound*     _speechSoundHandler;
     //Fonts
     std::string      _mainFontPath;
     sf::Font         _mainFont;

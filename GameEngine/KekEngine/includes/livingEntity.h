@@ -41,9 +41,13 @@ public:
     b2Body*         getBody() const;
     void            updateBody(const bool disableAngularVelocity=true);
     void            moveBody(const sf::Vector2f &vector, b2Body* constraint);
+    void            setActive(const bool active);
+    const bool      getActive() const;
 protected:
     int _hp;
+    int _currentHp;
     bool _animated;
+    bool _active;
     float _speed;
     sf::Time _animationSpeed;
     std::array<Animation*, LivingEntity::DirectionCount> _animations;

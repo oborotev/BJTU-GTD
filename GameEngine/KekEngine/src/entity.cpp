@@ -29,3 +29,13 @@ void    Entity::setX(const double &x)
 {
     this->_x = x;
 }
+
+void    Entity::addDialog(const std::string &dialog)
+{
+    this->_dialogs.push_back(dialog);
+}
+
+void    Entity::cleanDialogs()
+{
+    this->_dialogs.clear();
+}
